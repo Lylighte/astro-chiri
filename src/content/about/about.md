@@ -7,10 +7,10 @@ This content will be displayed at the top of the index page.
 You can leave this empty if you don’t want to show any content.
 -->
 
-A static blog theme based on [Astro](https://astro.build), designed for clarity and focus.
+[Blog](https://lyernest.240725.xyz), [GitHub](https://github.com/Lylighte), [Mail](mailto:mlmliynde@outlook.com)
 
-With a deliberately minimal design, this layout ensures your content takes center stage. It's built for flexibility, offering customization options that honor its clean and elegant aesthetic.
+**Welcome to Lylighte's Home Page**
 
-Effortlessly share your thoughts in _a calm & dustless space._
+I'm an undergraduate student majoring in Electronic Science and Technology at the University of Science and Technology of China (USTC). Meanwhile I take interest in programming, pixelart creation and game development. 
 
-Check posts for details and view source on [GitHub](https://github.com/the3ash/astro-chiri).
+You can find my projects below.

@@ -44,8 +44,10 @@ export const { getStaticPaths, GET } = await OGImageRoute({
       }
     },
     fonts: [
-      'https://cdn.jsdelivr.net/npm/font-pingfang-sc-font-weight-improved@latest/PingFangSC-Medium.woff2',
-      'https://cdn.jsdelivr.net/npm/font-pingfang-sc-font-weight-improved@latest/PingFangSC-Semibold.woff2'
+      'https://cdn.jsdmirror.com/npm/font-pingfang-sc-font-weight-improved@latest/PingFangSC-Medium.woff2',
+      'https://cdn.jsdmirror.com/npm/font-pingfang-sc-font-weight-improved@latest/PingFangSC-Semibold.woff2'
+      // 'https://cdn.jsdelivr.net/npm/font-pingfang-sc-font-weight-improved@latest/PingFangSC-Medium.woff2',
+      // 'https://cdn.jsdelivr.net/npm/font-pingfang-sc-font-weight-improved@latest/PingFangSC-Semibold.woff2'
     ]
   })
 })
