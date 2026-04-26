@@ -1,79 +1,55 @@
 {
   "$schema": "schema.json",
   "basics": {
-    "name": "Lylighte",
-    "label": "Undergraduate Student · Electronic Science and Technology",
-    "email": "mlmliynde@outlook.com",
-    "website": "https://www.lylighte.cc/",
-    "summary": "Undergraduate student at USTC, passionate about programming, pixel art creation, and game development. Building elegant software with clean design principles."
+    "name": "Your Name",
+    "label": "Job Title / Tagline",
+    "email": "your@email.com",
+    "website": "https://example.com",
+    "summary": "A brief introduction about yourself."
   },
   "education": [
     {
-      "institution": "University of Science and Technology of China (USTC)",
-      "degree": "Bachelor of Engineering",
-      "field": "Electronic Science and Technology",
-      "startDate": "2022-09",
-      "endDate": "2026-06",
+      "institution": "University Name",
+      "degree": "Degree Type",
+      "field": "Field of Study",
+      "startDate": "2020-09",
+      "endDate": "2024-06",
       "highlights": [
-        "Relevant coursework: Data Structures, Algorithms, Computer Architecture",
-        "Focus on intersection of hardware and software systems"
+        "Notable achievement or coursework",
+        "Honors or extracurricular highlights"
       ]
     }
   ],
   "skills": [
     {
-      "name": "Programming Languages",
-      "keywords": ["TypeScript", "Python", "JavaScript", "C/C++"]
+      "name": "Category 1",
+      "keywords": ["Skill A", "Skill B", "Skill C"]
     },
     {
-      "name": "Web Development",
-      "keywords": ["Astro", "React", "Node.js", "HTML/CSS", "REST APIs"]
-    },
-    {
-      "name": "Tools & Platforms",
-      "keywords": ["Git", "VS Code", "Netlify", "pnpm", "ESLint", "Prettier"]
-    },
-    {
-      "name": "Creative",
-      "keywords": ["Pixel Art", "Game Development", "UI Design"]
+      "name": "Category 2",
+      "keywords": ["Skill D", "Skill E"]
     }
   ],
   "projects": [
     {
-      "name": "Astro Chiri",
-      "description": "A minimal, elegant blog theme built with Astro. Features dark/light mode, RSS feeds, Open Graph images, and a clean reading experience.",
-      "url": "https://github.com/the3ash/astro-chiri",
+      "name": "Project Name",
+      "description": "A short description of the project.",
+      "url": "https://github.com/username/project",
       "highlights": [
-        "Built with Astro v6 and TypeScript",
-        "Automatic Open Graph image generation",
-        "Responsive design with dark mode support"
+        "Key feature or contribution",
+        "Technology or methodology used"
       ],
-      "keywords": ["Astro", "TypeScript", "Blog"]
-    },
-    {
-      "name": "Personal Website",
-      "description": "Personal homepage and blog built on the Chiri theme, featuring pixel art, technical articles, and project showcases.",
-      "url": "https://www.lylighte.cc/",
-      "highlights": [
-        "Custom pixel art integration",
-        "RSS/Atom feed support",
-        "Optimized performance and accessibility"
-      ],
-      "keywords": ["Astro", "Blog", "Portfolio"]
+      "keywords": ["Tech1", "Tech2"]
     }
   ],
   "interests": [
     {
-      "name": "Programming",
-      "keywords": ["Web Development", "Open Source", "TypeScript"]
+      "name": "Interest 1",
+      "keywords": ["Topic A", "Topic B"]
     },
     {
-      "name": "Creative Arts",
-      "keywords": ["Pixel Art", "Game Design", "Digital Art"]
-    },
-    {
-      "name": "Technology",
-      "keywords": ["Minimalist Design", "Performance Optimization", "Linux"]
+      "name": "Interest 2",
+      "keywords": ["Topic C", "Topic D"]
     }
   ]
 }
