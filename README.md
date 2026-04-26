@@ -1,63 +1,88 @@
-# Chiri 🌸
+# Lylighte's Home
 
-![screenshot-light](public/screenshots/screenshot-light.png)
-![screenshot-dark](public/screenshots/screenshot-dark.png)
+[Chiri](https://github.com/the3ash/astro-chiri) 主题驱动的个人博客，基于 [Astro](https://astro.build) 构建。
 
-Chiri is a minimal blog theme built with [Astro](https://astro.build), offering customization options while preserving its clean aesthetic.
+> Chiri is a minimal blog theme built with Astro, offering customization options while preserving its clean aesthetic.
 
-Check the [demo](https://chiri.the3ash.com/) for more details.
+## 分支结构
 
-## Features
+| 分支 | 用途 |
+|---|---|
+| `main` | 同步上游 [the3ash/astro-chiri](https://github.com/the3ash/astro-chiri) |
+| `personal` | 个人主页，基于上游定期同步更新框架 |
+| `build` | CI 自动构建产物（`dist/`），供服务器拉取部署 |
 
-- [x] Build with Astro
-- [x] Responsive
-- [x] Light / Dark mode
-- [x] MDX
-- [x] KaTeX
-- [x] Sitemap
-- [x] OpenGraph
-- [x] RSS
+## 部署流水线
 
-## Getting Started
+```
+写文章 → git push personal
+                ↓
+        GitHub Actions 构建
+                ↓
+        push dist 到 build 分支
+                ↓
+        ECS crontab 每 3h 拉取
+                ↓
+        Nginx serve 静态文件
+```
 
-1. [Fork](https://github.com/the3ash/astro-chiri/fork) this repository, or use this template to [create a new repository](https://github.com/new?template_name=astro-chiri&template_owner=the3ash).
+## 仓库结构
 
-2. Run the following commands:
+```
+.
+├── public/                  # 静态资源
+│   ├── feeds/               # RSS/Atom 样式
+│   ├── fonts/               # 字体文件
+│   ├── og/                  # Open Graph 图片
+│   ├── screenshots/         # 截图
+│   └── katex.min.css        # KaTeX 样式
+├── scripts/                 # 工具脚本
+│   ├── new-post.ts          # 新建文章
+│   ├── toggle-proxy.ts      # 代理切换
+│   └── update-theme.ts      # 更新主题
+├── src/
+│   ├── components/          # Astro 组件
+│   │   ├── examples/        # 示例组件
+│   │   ├── layout/          # 布局组件
+│   │   ├── ui/              # UI 组件
+│   │   └── widgets/         # 功能组件
+│   ├── content/             # 内容
+│   │   ├── about/           # 关于页面
+│   │   └── posts/           # 文章
+│   ├── layouts/             # 页面布局
+│   ├── pages/               # 路由页面
+│   │   ├── [...slug].astro  # 动态路由
+│   │   ├── index.astro      # 首页
+│   │   ├── atom.xml.ts      # Atom Feed
+│   │   ├── rss.xml.ts       # RSS Feed
+│   │   ├── api/proxy.ts     # API 代理
+│   │   └── open-graph/      # OG 图片生成
+│   ├── plugins/             # Remark/Rehype 插件
+│   ├── styles/              # 全局样式
+│   ├── types/               # TypeScript 类型
+│   └── utils/               # 工具函数
+├── .github/workflows/       # CI/CD
+│   └── deploy.yml           # 构建部署
+├── astro.config.ts          # Astro 配置
+├── tsconfig.json            # TypeScript 配置
+└── package.json
+```
 
-   ```bash
-   git clone <your-repo-url>
+## 命令
 
-   cd <your-repo-name>
+| 命令 | 说明 |
+|---|---|
+| `pnpm dev` | 本地开发 |
+| `pnpm build` | 构建生产版本 |
+| `pnpm preview` | 预览构建产物 |
+| `pnpm new <title>` | 新建文章（`_title` 为草稿） |
+| `pnpm update-theme` | 更新主题到最新版 |
 
-   pnpm install
+## 原始项目
 
-   pnpm dev
-   ```
-
-3. Edit `src/config.ts` and `src/content/about/about.md` to your liking.
-
-4. Use `pnpm new <title>` to create new posts, or add your posts to `src/content/posts`.
-
-5. You need to set adapter as follows before deploying to Netlify, Vercel, or other platforms, but you can set `linkCard` to `false` in `src/config.ts` to skip this step:
-   - **Netlify**: `pnpm add @astrojs/netlify` and add `adapter: netlify()` in `astro.config.ts`.
-   - **Vercel**: `pnpm add @astrojs/vercel` and add `adapter: vercel()` in `astro.config.ts`.
-   - **Static (e.g. GitHub Pages)**: `pnpm add @astrojs/static` and add `adapter: static()` in `astro.config.ts`.
-   - Refer to [Astro Deployment Guides](https://docs.astro.build/en/guides/deploy/) for more details.
-
-&emsp;[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start) [![Deploy to Vercel](https://vercel.com/button)](https://vercel.com/new)
-
-## Commands
-
-- `pnpm new <title>` - Create a new post (use `_title` for drafts)
-- `pnpm update-theme` - Update the theme to the latest version
-
-## References
-
-- https://paco.me/
-- https://benji.org/
-- https://shud.in/
-- https://retypeset.radishzz.cc/
+- 主题：**[the3ash/astro-chiri](https://github.com/the3ash/astro-chiri)**
+- 演示：https://chiri.the3ash.com/
 
 ## License
 
-MIT
+[MIT](LICENSE)
