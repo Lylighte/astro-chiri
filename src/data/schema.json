@@ -1,0 +1,75 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "description": "Resume data schema for Lylighte's personal site",
+  "properties": {
+    "basics": {
+      "type": "object",
+      "description": "Basic personal information",
+      "properties": {
+        "name": { "type": "string", "description": "Full name" },
+        "label": { "type": "string", "description": "Title/headline" },
+        "email": { "type": "string", "format": "email", "description": "Email address" },
+        "website": { "type": "string", "format": "uri", "description": "Personal website URL" },
+        "summary": { "type": "string", "description": "Brief professional summary" }
+      },
+      "required": ["name", "label", "summary"]
+    },
+    "education": {
+      "type": "array",
+      "description": "Educational background",
+      "items": {
+        "type": "object",
+        "properties": {
+          "institution": { "type": "string" },
+          "degree": { "type": "string" },
+          "field": { "type": "string" },
+          "startDate": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}$" },
+          "endDate": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}$" },
+          "highlights": { "type": "array", "items": { "type": "string" } }
+        },
+        "required": ["institution", "degree", "field", "startDate", "endDate"]
+      }
+    },
+    "skills": {
+      "type": "array",
+      "description": "Skills grouped by category",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "keywords": { "type": "array", "items": { "type": "string" } }
+        },
+        "required": ["name", "keywords"]
+      }
+    },
+    "projects": {
+      "type": "array",
+      "description": "Notable projects",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "description": { "type": "string" },
+          "url": { "type": "string", "format": "uri" },
+          "highlights": { "type": "array", "items": { "type": "string" } },
+          "keywords": { "type": "array", "items": { "type": "string" } }
+        },
+        "required": ["name", "description"]
+      }
+    },
+    "interests": {
+      "type": "array",
+      "description": "Personal interests",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "keywords": { "type": "array", "items": { "type": "string" } }
+        },
+        "required": ["name"]
+      }
+    }
+  },
+  "required": ["basics"]
+}

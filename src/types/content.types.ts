@@ -20,3 +20,47 @@ export interface TOCItem {
 export interface PostListProps {
   posts: CollectionEntry<'posts'>[]
 }
+
+// ── Resume Types ──────────────────────────────────────────────
+export interface ResumeBasics {
+  name: string
+  label: string
+  email?: string
+  website?: string
+  summary: string
+}
+
+export interface ResumeEducation {
+  institution: string
+  degree: string
+  field: string
+  startDate: string
+  endDate: string
+  highlights?: string[]
+}
+
+export interface ResumeSkill {
+  name: string
+  keywords: string[]
+}
+
+export interface ResumeProject {
+  name: string
+  description: string
+  url?: string
+  highlights?: string[]
+  keywords?: string[]
+}
+
+export interface ResumeInterest {
+  name: string
+  keywords?: string[]
+}
+
+export interface ResumeData {
+  basics: ResumeBasics
+  education?: ResumeEducation[]
+  skills?: ResumeSkill[]
+  projects?: ResumeProject[]
+  interests?: ResumeInterest[]
+}
