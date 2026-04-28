@@ -1,66 +1,83 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "object",
-  "description": "Resume data schema for Lylighte's personal site",
+  "description": "Personal resume data schema — informal, personality-first",
   "properties": {
     "basics": {
       "type": "object",
       "description": "Basic personal information",
       "properties": {
         "name": { "type": "string", "description": "Full name" },
-        "label": { "type": "string", "description": "Title/headline" },
+        "label": { "type": "string", "description": "Title/headline (can be empty)" },
         "email": { "type": "string", "format": "email", "description": "Email address" },
         "website": { "type": "string", "format": "uri", "description": "Personal website URL" },
-        "summary": { "type": "string", "description": "Brief professional summary" }
+        "summary": { "type": "string", "description": "Brief personal intro — show your vibe" },
+        "skills": { "type": "array", "description": "Flat list of skills, no categories", "items": { "type": "string" } }
       },
-      "required": ["name", "label", "summary"]
+      "required": ["name", "summary"]
     },
-    "education": {
+    "experience": {
       "type": "array",
-      "description": "Educational background",
+      "description": "Work experience & education entries (education also goes here)",
       "items": {
         "type": "object",
         "properties": {
-          "institution": { "type": "string" },
-          "degree": { "type": "string" },
-          "field": { "type": "string" },
+          "title": { "type": "string", "description": "Role, e.g. 'Frontend Intern' or 'B.Eng in ...'" },
+          "organization": { "type": "string", "description": "Company / lab / university name" },
           "startDate": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}$" },
           "endDate": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}$" },
           "highlights": { "type": "array", "items": { "type": "string" } }
         },
-        "required": ["institution", "degree", "field", "startDate", "endDate"]
+        "required": ["title", "organization", "startDate", "endDate"]
       }
     },
-    "skills": {
+    "activity": {
       "type": "array",
-      "description": "Skills grouped by category",
+      "description": "Student org / club / community involvement — renders in the Interests section",
+      "items": {
+        "type": "object",
+        "properties": {
+          "role": { "type": "string" },
+          "organization": { "type": "string" },
+          "startDate": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}$" },
+          "endDate": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}$" },
+          "highlights": { "type": "array", "items": { "type": "string" } }
+        },
+        "required": ["role", "organization", "startDate", "endDate"]
+      }
+    },
+    "certificates": {
+      "type": "array",
+      "description": "Certificates & awards combined",
       "items": {
         "type": "object",
         "properties": {
           "name": { "type": "string" },
-          "keywords": { "type": "array", "items": { "type": "string" } }
+          "issuer": { "type": "string" },
+          "date": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}$" },
+          "url": { "type": "string", "format": "uri" }
         },
-        "required": ["name", "keywords"]
+        "required": ["name", "date"]
       }
     },
-    "projects": {
+    "publications": {
       "type": "array",
-      "description": "Notable projects",
+      "description": "Published papers / articles (reserved for future use)",
       "items": {
         "type": "object",
         "properties": {
-          "name": { "type": "string" },
-          "description": { "type": "string" },
-          "url": { "type": "string", "format": "uri" },
-          "highlights": { "type": "array", "items": { "type": "string" } },
-          "keywords": { "type": "array", "items": { "type": "string" } }
+          "title": { "type": "string" },
+          "authors": { "type": "string" },
+          "venue": { "type": "string" },
+          "year": { "type": "string" },
+          "url": { "type": "string", "format": "uri" }
         },
-        "required": ["name", "description"]
+        "required": ["title", "venue", "year"]
       }
     },
     "interests": {
       "type": "array",
-      "description": "Personal interests",
+      "description": "Hobbies & personal interests",
       "items": {
         "type": "object",
         "properties": {
@@ -68,6 +85,18 @@
           "keywords": { "type": "array", "items": { "type": "string" } }
         },
         "required": ["name"]
+      }
+    },
+    "links": {
+      "type": "array",
+      "description": "Link list — social profiles, bookmarks, etc.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": { "type": "string" },
+          "url": { "type": "string", "format": "uri" }
+        },
+        "required": ["label", "url"]
       }
     }
   },

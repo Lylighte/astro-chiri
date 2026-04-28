@@ -6,16 +6,14 @@ interface Props {
 }
 
 const { data } = Astro.props
-const { basics, education, skills, projects, interests } = data
+const { basics, experience, activity, certificates, interests, links } = data
 
-/** Format "2024-09" -> "Sep 2024" */
 const fmtDate = (s: string) => {
   const [y, m] = s.split('-')
   const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
   return `${monthNames[parseInt(m, 10) - 1]} ${y}`
 }
 
-/** Check if a YYYY-MM date string is in the future (or is a placeholder like "至今") */
 const isPresent = (s: string) => {
   if (s === '至今' || s === 'Present') return true
   const now = new Date()
@@ -23,128 +21,110 @@ const isPresent = (s: string) => {
   const d = new Date(parseInt(y, 10), parseInt(m, 10) - 1)
   return d >= new Date(now.getFullYear(), now.getMonth())
 }
+
+const dateRange = (start: string, end: string) =>
+  `${fmtDate(start)} – ${isPresent(end) ? 'Present' : fmtDate(end)}`
 ---
 
-<div class="resume">
-  <!-- Header -->
+<div class="resume prose">
+  <!-- ── Header ── -->
   <header class="resume-header">
     <h1 class="resume-name">{basics.name}</h1>
-    <p class="resume-label">{basics.label}</p>
+    {basics.label && <p class="resume-label">{basics.label}</p>}
     <div class="resume-contact">
       {basics.email && <a href={`mailto:${basics.email}`}>{basics.email}</a>}
-      {basics.website && <a href={basics.website} target="_blank">{basics.website.replace(/^https?:\/\//, '')}</a>}
+      {basics.website && <a href={basics.website} target="_blank" rel="noopener noreferrer">{basics.website.replace(/^https?:\/\//, '')}</a>}
     </div>
     {basics.summary && <p class="resume-summary">{basics.summary}</p>}
+    {basics.skills && basics.skills.length > 0 && (
+      <p class="resume-skills"><span class="label">Skills: </span>{basics.skills.join(' · ')}</p>
+    )}
   </header>
 
-  <!-- Education -->
-  {
-    education && education.length > 0 && (
-      <section class="resume-section">
-        <h2 class="section-title">Education</h2>
-        {
-          education.map((edu) => (
-            <div class="resume-item">
-              <div class="item-header">
-                <span class="item-title">{edu.degree} in {edu.field}</span>
-                <span class="item-date">{fmtDate(edu.startDate)} – {isPresent(edu.endDate) ? 'Present' : fmtDate(edu.endDate)}</span>
-              </div>
-              <div class="item-subtitle">{edu.institution}</div>
-              {
-                edu.highlights && edu.highlights.length > 0 && (
-                  <ul class="item-details">
-                    {edu.highlights.map((h) => <li>{h}</li>)}
-                  </ul>
-                )
-              }
-            </div>
-          ))
-        }
-      </section>
-    )
-  }
-
-  <!-- Skills -->
-  {
-    skills && skills.length > 0 && (
-      <section class="resume-section">
-        <h2 class="section-title">Skills</h2>
-        <div class="skills-grid">
-          {
-            skills.map((skill) => (
-              <div class="skill-category">
-                <span class="skill-name">{skill.name}</span>
-                <div class="skill-tags">
-                  {skill.keywords.map((kw) => <span class="tag">{kw}</span>)}
-                </div>
-              </div>
-            ))
-          }
+  <!-- ── Experience (incl. education) ── -->
+  {experience && experience.length > 0 && (
+    <section class="resume-section">
+      <h2>Experience</h2>
+      {experience.map((item) => (
+        <div class="resume-item">
+          <div class="item-header">
+            <span class="item-title">{item.title}</span>
+            <span class="item-date">{dateRange(item.startDate, item.endDate)}</span>
+          </div>
+          <div class="item-subtitle">{item.organization}</div>
+          {item.highlights && item.highlights.length > 0 && (
+            <ul class="item-details">{item.highlights.map((h) => <li>{h}</li>)}</ul>
+          )}
         </div>
-      </section>
-    )
-  }
+      ))}
+    </section>
+  )}
 
-  <!-- Projects -->
-  {
-    projects && projects.length > 0 && (
-      <section class="resume-section">
-        <h2 class="section-title">Projects</h2>
-        {
-          projects.map((proj) => (
-            <div class="resume-item">
-              <div class="item-header">
-                <a class="item-title" href={proj.url} target="_blank" rel="noopener noreferrer">{proj.name}</a>
-              </div>
-              <p class="item-desc">{proj.description}</p>
-              {
-                proj.highlights && proj.highlights.length > 0 && (
-                  <ul class="item-details">
-                    {proj.highlights.map((h) => <li>{h}</li>)}
-                  </ul>
-                )
-              }
-              {
-                proj.keywords && proj.keywords.length > 0 && (
-                  <div class="skill-tags">
-                    {proj.keywords.map((kw) => <span class="tag tag-sm">{kw}</span>)}
-                  </div>
-                )
-              }
-            </div>
-          ))
-        }
-      </section>
-    )
-  }
-
-  <!-- Interests -->
-  {
-    interests && interests.length > 0 && (
-      <section class="resume-section">
-        <h2 class="section-title">Interests</h2>
-        <div class="interests-list">
-          {
-            interests.map((interest) => (
-              <div class="interest-item">
-                <span class="interest-name">{interest.name}</span>
-                <div class="skill-tags">
-                  {interest.keywords?.map((kw) => <span class="tag">{kw}</span>)}
-                </div>
-              </div>
-            ))
-          }
+  <!-- ── Certificates & Awards ── -->
+  {certificates && certificates.length > 0 && (
+    <section class="resume-section">
+      <h2>Certificates &amp; Awards</h2>
+      {certificates.map((item) => (
+        <div class="resume-item">
+          <div class="item-header">
+            <span class="item-title">{item.name}</span>
+            <span class="item-date">{fmtDate(item.date)}</span>
+          </div>
+          {item.issuer && <div class="item-subtitle">{item.issuer}</div>}
         </div>
-      </section>
-    )
-  }
+      ))}
+    </section>
+  )}
+
+  <!-- ── Activity ── -->
+  {activity && activity.length > 0 && (
+    <section class="resume-section">
+      <h2>Activity</h2>
+      {activity.map((item) => (
+        <div class="resume-item">
+          <div class="item-header">
+            <span class="item-title">{item.role}</span>
+            <span class="item-date">{dateRange(item.startDate, item.endDate)}</span>
+          </div>
+          <div class="item-subtitle">{item.organization}</div>
+          {item.highlights && item.highlights.length > 0 && (
+            <ul class="item-details">{item.highlights.map((h) => <li>{h}</li>)}</ul>
+          )}
+        </div>
+      ))}
+    </section>
+  )}
+
+  <!-- ── Interests ── -->
+  {interests && interests.length > 0 && (
+    <section class="resume-section">
+      <h2>Interests</h2>
+      <div class="interests-list">
+        {interests.map((interest) => (
+          <div class="interest-line">
+            <span class="interest-name">{interest.name}</span>
+            <span class="interest-items">{interest.keywords?.join(' · ')}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <!-- ── Links ── -->
+  {links && links.length > 0 && (
+    <section class="resume-section">
+      <h2>Links</h2>
+      <div class="links-list">
+        {links.map((link) => (
+          <a class="link-item" href={link.url} target="_blank" rel="noopener noreferrer">{link.label}</a>
+        ))}
+      </div>
+    </section>
+  )}
 </div>
 
 <style>
-  .resume {
-    max-width: 100%;
-    margin: 0 auto;
-  }
+  .resume { margin-bottom: 8rem; }
 
   /* ── Header ── */
   .resume-header {
@@ -152,197 +132,118 @@ const isPresent = (s: string) => {
     padding-bottom: 1.5rem;
     border-bottom: 1px solid var(--border);
   }
-
   .resume-name {
-    font-size: 1.75rem;
+    font-size: var(--font-size-l);
     font-weight: var(--font-weight-bold);
-    margin: 0 0 0.25rem 0;
-    line-height: 1.2;
+    margin: 1rem 0 0 0;
+    line-height: 1.4;
   }
-
   .resume-label {
-    font-size: var(--font-size-m);
     color: var(--text-secondary);
-    margin: 0 0 0.75rem 0;
+    margin: 0rem 0 0 0;
   }
-
   .resume-contact {
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem 1.25rem;
-    margin-bottom: 0.75rem;
+    margin: 0.5rem 0 0 0;
     font-size: var(--font-size-s);
   }
-
   .resume-contact a {
     color: var(--text-secondary);
     text-decoration: none;
     transition: color 0.2s;
   }
-
   .resume-contact a:hover {
     color: var(--text-primary);
     text-decoration: underline;
   }
-
   .resume-summary {
-    font-size: var(--font-size-m);
-    color: var(--text-primary);
-    line-height: 1.7;
     margin: 0.5rem 0 0 0;
+    line-height: 1.75;
+  }
+  .resume-skills {
+    margin: 0.5rem 0 0 0;
+    line-height: 1.75;
+    font-size: var(--font-size-s);
+    color: var(--text-secondary);
+  }
+  .resume-skills .label {
+    font-weight: var(--font-weight-bold);
+    color: var(--text-primary);
   }
 
   /* ── Sections ── */
   .resume-section {
-    margin-bottom: 2rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
   }
 
-  .section-title {
-    font-size: var(--font-size-m);
-    font-weight: var(--font-weight-bold);
-    margin: 0 0 1rem 0;
-    padding-bottom: 0.35rem;
-    border-bottom: 1px solid var(--border);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-  }
-
-  /* ── Items (Education, Projects) ── */
-  .resume-item {
-    margin-bottom: 1.25rem;
-  }
-
-  .resume-item:last-child {
-    margin-bottom: 0;
-  }
-
+  /* ── Items ── */
+  .resume-item { margin-bottom: 1rem; }
+  .resume-item:last-child { margin-bottom: 0; }
   .item-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    flex-wrap: wrap;
-    gap: 0.25rem 0.75rem;
+    display: flex; justify-content: space-between; align-items: baseline;
+    flex-wrap: wrap; gap: 0.25rem 0.75rem;
   }
-
   .item-title {
     font-weight: var(--font-weight-bold);
-    color: var(--text-primary);
-    text-decoration: none;
+    /* margin: 0 0 0 0; */
   }
-
-  a.item-title:hover {
-    text-decoration: underline;
-  }
-
+  .item-title a { color: var(--text-primary); }
   .item-date {
-    font-size: var(--font-size-s);
-    color: var(--text-secondary);
-    white-space: nowrap;
-    font-variant-numeric: tabular-nums;
+    font-size: var(--font-size-s); color: var(--text-secondary);
+    white-space: nowrap; font-variant-numeric: tabular-nums;
   }
-
-  .item-subtitle {
-    font-size: var(--font-size-s);
-    color: var(--text-secondary);
-    margin: 0.1rem 0 0.35rem 0;
+  .item-subtitle { font-size: var(--font-size-s); color: var(--text-secondary); margin: 0.2rem 0 0.2rem 0; }
+  .item-desc { margin: 0.25rem 0 0.35rem 0; line-height: 1.75; }
+  .item-tags {
+    font-size: var(--font-size-s); color: var(--text-secondary);
+    margin: 0.35rem 0 0 0;
   }
-
-  .item-desc {
-    font-size: var(--font-size-m);
-    color: var(--text-primary);
-    margin: 0.25rem 0 0.35rem 0;
-    line-height: 1.6;
-  }
-
   .item-details {
-    margin: 0.25rem 0 0 0;
-    padding-left: 1.15rem;
-    list-style: none;
+    margin: 0.2rem 0 0 0; padding-left: 1.15rem; list-style: none;
   }
-
   .item-details li {
-    position: relative;
-    font-size: var(--font-size-s);
-    color: var(--text-secondary);
-    line-height: 1.6;
-    margin-bottom: 0.15rem;
+    position: relative; font-size: var(--font-size-s);
+    color: var(--text-secondary); line-height: 1.6; margin-bottom: 0.05rem;
   }
-
   .item-details li::before {
-    content: '·';
-    position: absolute;
-    left: -0.85rem;
-    color: var(--text-tertiary);
-  }
-
-  /* ── Skills Grid ── */
-  .skills-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-  }
-
-  .skill-category {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 0.4rem 0.6rem;
-  }
-
-  .skill-name {
-    font-weight: var(--font-weight-bold);
-    font-size: var(--font-size-s);
-    min-width: 8rem;
-    color: var(--text-primary);
-  }
-
-  /* ── Tags ── */
-  .skill-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.3rem;
-  }
-
-  .tag {
-    display: inline-block;
-    font-size: var(--font-size-s);
-    padding: 0.1rem 0.5rem;
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    color: var(--text-secondary);
-    line-height: 1.5;
-  }
-
-  .tag-sm {
-    font-size: 0.7rem;
-    padding: 0.05rem 0.4rem;
+    content: '·'; position: absolute; left: -0.85rem; color: var(--text-tertiary);
   }
 
   /* ── Interests ── */
-  .interests-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
+  .interests-list { margin-bottom: 1.25rem; }
+  .interest-line {
+    display: flex; flex-wrap: wrap; align-items: baseline;
+    gap: 0.4rem 0.6rem; line-height: 1.75;
   }
-
-  .interest-item {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 0.4rem 0.6rem;
-  }
-
   .interest-name {
     font-weight: var(--font-weight-bold);
-    font-size: var(--font-size-s);
-    min-width: 8rem;
-    color: var(--text-primary);
+    min-width: 7.5rem;
+  }
+  .interest-items {
+    font-size: var(--font-size-s); color: var(--text-secondary);
   }
 
-  /* ── Print ── */
+  /* ── Links ── */
+  .links-list {
+    display: flex; flex-wrap: wrap; gap: 0.75rem;
+  }
+  .link-item {
+    font-size: var(--font-size-s);
+    color: var(--text-secondary);
+    text-decoration: underline;
+    text-decoration-color: var(--text-tertiary);
+    transition: color 0.2s, text-decoration-color 0.2s;
+  }
+  .link-item:hover {
+    color: var(--text-primary);
+    text-decoration-color: var(--text-primary);
+  }
+
   @media print {
-    .resume-name { font-size: 1.5rem; }
-    .resume { max-width: 100%; }
+    .resume-name { font-size: var(--font-size-l); }
     .resume-section { break-inside: avoid; }
   }
 </style>

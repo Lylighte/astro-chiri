@@ -16,10 +16,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "new": "tsx scripts/new-post.ts",
-    "update-theme": "tsx scripts/update-theme.ts",
-    "resume": "tsx scripts/update-resume.ts",
-    "resume:info": "tsx scripts/update-resume.ts info",
-    "resume:validate": "tsx scripts/update-resume.ts validate"
+    "update-theme": "tsx scripts/update-theme.ts"
   },
   "dependencies": {
     "@astrojs/mdx": "^5.0.3",

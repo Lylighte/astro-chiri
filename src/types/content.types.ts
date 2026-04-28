@@ -22,34 +22,45 @@ export interface PostListProps {
 }
 
 // ── Resume Types ──────────────────────────────────────────────
+
 export interface ResumeBasics {
   name: string
   label: string
   email?: string
   website?: string
   summary: string
+  skills?: string[]
 }
 
-export interface ResumeEducation {
-  institution: string
-  degree: string
-  field: string
+export interface ResumeExperience {
+  title: string
+  organization: string
   startDate: string
   endDate: string
   highlights?: string[]
 }
 
-export interface ResumeSkill {
-  name: string
-  keywords: string[]
+export interface ResumeActivity {
+  role: string
+  organization: string
+  startDate: string
+  endDate: string
+  highlights?: string[]
 }
 
-export interface ResumeProject {
+export interface ResumeCertificate {
   name: string
-  description: string
+  issuer?: string
+  date: string
   url?: string
-  highlights?: string[]
-  keywords?: string[]
+}
+
+export interface ResumePublication {
+  title: string
+  authors?: string
+  venue: string
+  year: string
+  url?: string
 }
 
 export interface ResumeInterest {
@@ -57,10 +68,17 @@ export interface ResumeInterest {
   keywords?: string[]
 }
 
+export interface ResumeLink {
+  label: string
+  url: string
+}
+
 export interface ResumeData {
   basics: ResumeBasics
-  education?: ResumeEducation[]
-  skills?: ResumeSkill[]
-  projects?: ResumeProject[]
+  experience?: ResumeExperience[]
+  activity?: ResumeActivity[]
+  certificates?: ResumeCertificate[]
+  publications?: ResumePublication[]
   interests?: ResumeInterest[]
+  links?: ResumeLink[]
 }

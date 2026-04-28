@@ -1,55 +1,64 @@
 {
   "$schema": "schema.json",
   "basics": {
-    "name": "Your Name",
-    "label": "Job Title / Tagline",
-    "email": "your@email.com",
-    "website": "https://example.com",
-    "summary": "A brief introduction about yourself."
+    "name": "Yuanda Li",
+    "label": "StepFwd",
+    "email": "lylighte@ustc.edu",
+    "website": "https://www.lylighte.cc",
+    "summary": "Still a student, but eager to learn and grow in the field of technology.",
+    "skills": ["Hardware"]
   },
-  "education": [
+  "experience": [
     {
-      "institution": "University Name",
-      "degree": "Degree Type",
-      "field": "Field of Study",
-      "startDate": "2020-09",
-      "endDate": "2024-06",
+      "title": "Undergraduate in Electronic Science and Technology",
+      "organization": "University of Science and Technology of China",
+      "startDate": "2024-09",
+      "endDate": "2028-06",
       "highlights": [
-        "Notable achievement or coursework",
-        "Honors or extracurricular highlights"
       ]
     }
   ],
-  "skills": [
+    "certificates": [
     {
-      "name": "Category 1",
-      "keywords": ["Skill A", "Skill B", "Skill C"]
-    },
-    {
-      "name": "Category 2",
-      "keywords": ["Skill D", "Skill E"]
+      "name": "Outstanding Student Scholarship (Grade 1) (2024-2025)",
+      "issuer": "University of Science and Technology of China",
+      "date": "2025-09"
     }
   ],
-  "projects": [
+  "activity": [
     {
-      "name": "Project Name",
-      "description": "A short description of the project.",
-      "url": "https://github.com/username/project",
+      "role": "Member",
+      "organization": "SME's Student Union",
+      "startDate": "2024-09",
+      "endDate": "2026-09",
       "highlights": [
-        "Key feature or contribution",
-        "Technology or methodology used"
-      ],
-      "keywords": ["Tech1", "Tech2"]
+        "Fostering a vibrant campus atmosphere"
+      ]
+    },
+    {
+      "role": "Member",
+      "organization": "USTC's Media Center",
+      "startDate": "2026-03",
+      "endDate": "2028-06",
+      "highlights": [
+        "Contributing to the creation for the university community"
+      ]
     }
   ],
   "interests": [
     {
-      "name": "Interest 1",
-      "keywords": ["Topic A", "Topic B"]
+      "name": "Tech",
+      "keywords": ["PC", "DIY", "Coding"]
     },
     {
-      "name": "Interest 2",
-      "keywords": ["Topic C", "Topic D"]
+      "name": "ACG",
+      "keywords": ["Minecraft", "MUG"]
+    }
+  ],
+  "links": [
+    {
+      "label": "GitHub",
+      "url": "https://github.com/lylighte"
     }
   ]
 }

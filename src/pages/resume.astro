@@ -4,9 +4,10 @@ import ResumeWidget from '@/components/widgets/Resume.astro'
 import { themeConfig } from '@/config'
 import type { ResumeData } from '@/types'
 
-// Import resume data — this is the single source of truth.
+// Static import — Vite tracks this file for hot reload.
 // Edit src/data/resume.json to update your resume.
-const resumeData: ResumeData = (await import('@/data/resume.json')).default
+import _resumeData from '@/data/resume.json'
+const resumeData = _resumeData as ResumeData
 ---
 
 <IndexLayout title={`Resume · ${themeConfig.site.title}`} description={`Resume of ${resumeData.basics.name}`}>

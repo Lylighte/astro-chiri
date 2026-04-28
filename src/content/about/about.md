@@ -7,7 +7,7 @@ This content will be displayed at the top of the index page.
 You can leave this empty if you don’t want to show any content.
 -->
 
-[Blog](https://lyernest.240725.xyz), [GitHub](https://github.com/Lylighte), [Mail](mailto:mlmliynde@outlook.com)
+[Blog](https://lyernest.240725.xyz), [GitHub](https://github.com/Lylighte), [Mail](mailto:lighte@240725.xyz)
 
 **Welcome to Lylighte's Home Page**
 
