@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="/feeds/rss-style.xsl"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Lylighte</title>
+        <link>https://www.lylighte.cc</link>
+        <description>Minimal blog built by Astro</description>
+        <lastBuildDate>Tue, 28 Apr 2026 13:01:30 GMT</lastBuildDate>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>Astro Chiri Feed Generator</generator>
+        <language>en-US</language>
+        <copyright>Copyright © 2026 Lylighte</copyright>
+        <atom:link href="https://www.lylighte.cc/rss.xml" rel="self" type="application/rss+xml"/>
+        <item>
+            <title><![CDATA[Element Skin (Contributor)]]></title>
+            <link>https://www.lylighte.cc/element-skin-contributor</link>
+            <guid isPermaLink="false">https://www.lylighte.cc/element-skin-contributor</guid>
+            <pubDate>Tue, 28 Apr 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[A modern external login and skin hosting platform for Minecraft. Reposity: Element Skin - GitHub Owner: water2004]]></description>
+            <content:encoded><![CDATA[<p>A modern external login and skin hosting platform for Minecraft.</p>
+<p>Reposity: <a href="https://github.com/water2004/element-skin">Element Skin - GitHub</a></p>
+<p>Owner: <a href="https://github.com/water2004">water2004</a></p>
+<p><img src="https://www.lylighte.cc/file/p/static/2026/04/element-skin-demo-1_0_0_comp.jpg?sign=C-QxaXBLmqpVNrGE-90hPa8l5FCTbqkkgnkuCudPKE8=:0" alt="" /></p>
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[Feature Mapart in Minecraft]]></title>
+            <link>https://www.lylighte.cc/feature-mapart</link>
+            <guid isPermaLink="false">https://www.lylighte.cc/feature-mapart</guid>
+            <pubDate>Wed, 11 Feb 2026 00:00:00 GMT</pubDate>
+            <description><![CDATA[A tool to mix two images into a schematic file for Minecraft. Featuring the base colors of crimson_stem and warped_stem with their stripped variants, what players see is one image, while the map shows...]]></description>
+            <content:encoded><![CDATA[<p>A tool to mix two images into a schematic file for Minecraft. Featuring the base colors of <code>crimson_stem</code> and <code>warped_stem</code> with their stripped variants, what players see is one image, while the map shows the other.</p>
+<p>The tool is built by Gemini and is open source and available on <a href="https://github.com/Lylighte/feature-mapart">GitHub</a>.</p>
+<p><img src="https://www.lylighte.cc/file/p/static/2026/02/feature-mapart.jpg?sign=fws0wlFPzSNZrgFbV_HGaokLOlx92ZJ4MLbP_DfznAM=:0" alt="" /></p>
+]]></content:encoded>
+        </item>
+        <item>
+            <title><![CDATA[Template]]></title>
+            <link>https://www.lylighte.cc/new-post</link>
+            <guid isPermaLink="false">https://www.lylighte.cc/new-post</guid>
+            <pubDate>Thu, 01 Jan 1970 00:00:00 GMT</pubDate>
+        </item>
+    </channel>
+</rss>

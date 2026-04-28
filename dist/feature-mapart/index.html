@@ -1,0 +1,1592 @@
+<!DOCTYPE html><html lang="en-US"> <head><!--
+  This is a critical style block to prevent flashing on page load in dark mode.
+  It is injected into the <head> of the document before the main stylesheets are loaded.
+--><style>
+  :root {
+    --bg: #ffffff;
+  }
+
+  html.dark {
+    --bg: #1c1c1c;
+  }
+
+  html {
+    background-color: var(--bg);
+    color-scheme: light;
+  }
+
+  html.dark {
+    color-scheme: dark;
+  }
+</style><script>
+  // Global Theme Manager
+  ;(function () {
+    // Prevent duplicate initialization
+    if (window.ThemeManager && window.ThemeManager.initialized) {
+      return
+    }
+
+    window.ThemeManager = {
+      STORAGE_KEY: 'chiri-theme',
+      initialized: false,
+
+      getSystemTheme() {
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+      },
+
+      getStoredTheme() {
+        try {
+          return localStorage.getItem(this.STORAGE_KEY)
+        } catch {
+          return null
+        }
+      },
+
+      setStoredTheme(theme) {
+        try {
+          if (theme === 'system') {
+            localStorage.removeItem(this.STORAGE_KEY)
+          } else {
+            localStorage.setItem(this.STORAGE_KEY, theme)
+          }
+        } catch (e) {
+          console.warn('Failed to store theme preference:', e)
+        }
+      },
+
+      getEffectiveTheme() {
+        const stored = this.getStoredTheme()
+        return stored || this.getSystemTheme()
+      },
+
+      isUsingSystemTheme() {
+        return this.getStoredTheme() === null
+      },
+
+      applyTheme(theme) {
+        document.documentElement.classList.remove('light', 'dark')
+        document.documentElement.classList.add(theme)
+
+        // Dispatch event for other components
+        document.dispatchEvent(
+          new CustomEvent('themechange', {
+            detail: {
+              theme,
+              isUserChoice: !this.isUsingSystemTheme(),
+              isSystemTheme: this.isUsingSystemTheme()
+            }
+          })
+        )
+      },
+
+      toggle() {
+        const currentTheme = this.getEffectiveTheme()
+        // Simply toggle between light and dark
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark'
+
+        this.setStoredTheme(newTheme)
+        this.applyTheme(newTheme)
+      },
+
+      init() {
+        if (this.initialized) return
+
+        // Set initial theme (maintain current theme when refreshing page)
+        this.applyTheme(this.getEffectiveTheme())
+
+        // Listen for system theme changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+          const newSystemTheme = e.matches ? 'dark' : 'light'
+
+          // Always follow system theme changes and update stored theme preference
+          this.setStoredTheme(newSystemTheme)
+          this.applyTheme(newSystemTheme)
+        })
+
+        this.initialized = true
+      }
+    }
+
+    // Initialize theme manager
+    window.ThemeManager.init()
+
+    // Apply theme when needed
+    const applyTheme = () => {
+      if (window.ThemeManager) {
+        const theme = window.ThemeManager.getEffectiveTheme()
+        window.ThemeManager.applyTheme(theme)
+      }
+    }
+
+    // Apply immediately on script load
+    applyTheme()
+
+    // Listen for navigation events
+    document.addEventListener('astro:before-preparation', applyTheme)
+
+    // Apply theme after DOM changes (both swap and page load)
+    const applyThemeAfterNavigation = () => {
+      if (window.ThemeManager) {
+        const currentTheme = window.ThemeManager.getEffectiveTheme()
+        const appliedTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+
+        if (currentTheme !== appliedTheme) {
+          // Use requestAnimationFrame to ensure theme is applied in the next frame, avoiding conflicts with view transition
+          requestAnimationFrame(() => {
+            window.ThemeManager.applyTheme(currentTheme)
+          })
+        }
+      }
+    }
+
+    document.addEventListener('astro:after-swap', applyThemeAfterNavigation)
+    document.addEventListener('astro:page-load', applyThemeAfterNavigation)
+
+    // Handle system theme changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+      if (window.ThemeManager && window.ThemeManager.isUsingSystemTheme()) {
+        setTimeout(applyTheme, 0)
+      }
+    })
+  })()
+</script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.j56hQv-j.js"></script><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="preload" href="/fonts/Inter.woff2" as="font" type="font/woff2" crossorigin="anonymous"><link rel="preload" href="/fonts/Besley-Italic.woff2" as="font" type="font/woff2" crossorigin="anonymous"><link rel="sitemap" href="/sitemap-index.xml"><link rel="alternate" type="application/rss+xml" title="Lylighte" href="https://www.lylighte.cc/rss.xml"><meta name="generator" content="Astro v6.1.9"><!-- Canonical URL --><link rel="canonical" href="https://www.lylighte.cc/feature-mapart/"><!-- Primary Meta Tags --><title>
+  Feature Mapart in Minecraft · Lylighte
+</title><meta name="title" content="Feature Mapart in Minecraft · Lylighte"><meta name="description" content="Minimal blog built by Astro"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://www.lylighte.cc/feature-mapart/"><meta property="og:title" content="Feature Mapart in Minecraft · Lylighte"><meta property="og:description" content="Minimal blog built by Astro"><meta property="og:image" content="https://www.lylighte.cc/open-graph/feature-mapart.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://www.lylighte.cc/feature-mapart/"><meta property="twitter:title" content="Feature Mapart in Minecraft · Lylighte"><meta property="twitter:description" content="Minimal blog built by Astro"><meta property="twitter:image" content="https://www.lylighte.cc/open-graph/feature-mapart.png"><link rel="stylesheet" href="/_astro/GradientMask.DDo-XyLI.css">
+<style>.date-left[data-astro-cid-5mzstg4p]{display:inline-block;min-width:86px;text-align:right}
+.back-button[data-astro-cid-cjjlykpo]{width:8rem;display:inline-flex;align-items:center;gap:.375rem;font-family:var(--serif);font-size:var(--font-size-m);font-style:italic;letter-spacing:0;line-height:1.75;color:var(--text-secondary);cursor:pointer;border:none;background-color:transparent;position:relative;margin-bottom:2.5em;padding:0;left:-.175em;transition:color .2s ease-out;text-decoration:none}.back-button[data-astro-cid-cjjlykpo]:hover{color:var(--text-primary)}@media(hover:none)and (pointer:coarse){.back-button[data-astro-cid-cjjlykpo]:hover{color:var(--text-secondary)}}.back-button[data-astro-cid-cjjlykpo] svg[data-astro-cid-cjjlykpo]{width:.8rem;height:.8rem;flex-shrink:0}.back-button[data-astro-cid-cjjlykpo].fixed-position{position:fixed;top:6rem;margin-bottom:0;padding-left:.75rem;z-index:10}
+.image-viewer[data-astro-cid-66hmb7oq]{position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .15s ease-in-out;background:color-mix(in srgb,var(--bg) 90%,transparent);cursor:zoom-out}.image-viewer[data-astro-cid-66hmb7oq].active{opacity:1;visibility:visible;pointer-events:auto}.image-viewer[data-astro-cid-66hmb7oq] img[data-astro-cid-66hmb7oq]{min-width:45rem;max-width:60vw;max-height:80vh;object-fit:contain;cursor:zoom-out}@media(max-width:768px){.image-viewer[data-astro-cid-66hmb7oq] img[data-astro-cid-66hmb7oq]{min-width:100vw}}body.image-viewer-open{overflow:hidden}.post-container[data-astro-cid-gjtny2mx]{display:flex;flex-direction:column;flex:1}.post-container[data-astro-cid-gjtny2mx] main[data-astro-cid-gjtny2mx]{flex:1}
+</style></head> <body data-centered="true" style="
+      max-width: 35rem;
+      --content-width: 35rem;
+    "> <script>
+  // Favicon theme switcher for system theme-based favicon updates, using external SVG file
+  class FaviconThemeSwitcher {
+    constructor() {
+      this.faviconLink =
+        document.querySelector('link[rel="icon"]') ||
+        document.querySelector('link[rel="shortcut icon"]') ||
+        document.querySelector('link[rel="apple-touch-icon"]')
+
+      if (!this.faviconLink) {
+        console.warn('Favicon link not found, skipping theme switcher')
+        return
+      }
+
+      this.mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+      this.svgUrl = '/favicon.svg'
+      this.currentColor = null
+      this.svgContent = null
+
+      this.mediaQuery.addEventListener('change', () => this.updateFavicon())
+      this.init()
+    }
+
+    async init() {
+      if (!this.svgContent) {
+        try {
+          const res = await fetch(this.svgUrl)
+          this.svgContent = await res.text()
+        } catch (e) {
+          console.warn('Failed to fetch favicon.svg:', e)
+          return
+        }
+      }
+      this.updateFavicon()
+    }
+
+    updateFavicon() {
+      const color = this.mediaQuery.matches ? '#ccc' : '#111'
+      if (this.currentColor === color) return
+      this.currentColor = color
+      this.updateFaviconColor(color)
+    }
+
+    updateFaviconColor(color) {
+      if (!this.svgContent) return
+      try {
+        const parser = new DOMParser()
+        const doc = parser.parseFromString(this.svgContent, 'image/svg+xml')
+
+        // Remove all <style> tags
+        doc.querySelectorAll('style').forEach((style) => style.remove())
+
+        // Recursively set fill attribute for all elements
+        function setFillRecursively(node) {
+          if (node.nodeType === 1) {
+            // Element node
+            node.setAttribute('fill', color)
+            // Remove fill from style attribute if present
+            if (node.hasAttribute('style')) {
+              let style = node.getAttribute('style')
+              style = style.replace(/fill\s*:\s*[^;]+;?/gi, '')
+              node.setAttribute('style', style)
+            }
+            for (let i = 0; i < node.childNodes.length; i++) {
+              setFillRecursively(node.childNodes[i])
+            }
+          }
+        }
+        setFillRecursively(doc.documentElement)
+
+        const serializer = new XMLSerializer()
+        const svg = serializer.serializeToString(doc)
+        const blob = new Blob([svg], { type: 'image/svg+xml' })
+        const blobUrl = URL.createObjectURL(blob)
+        this.faviconLink.href = blobUrl
+        if (this.previousBlobUrl) {
+          URL.revokeObjectURL(this.previousBlobUrl)
+        }
+        this.previousBlobUrl = blobUrl
+      } catch (e) {
+        console.warn('Failed to update favicon color:', e)
+      }
+    }
+  }
+
+  // Initialize favicon theme switcher
+  let faviconSwitcherInitialized = false
+  function init() {
+    if (faviconSwitcherInitialized) return
+    faviconSwitcherInitialized = true
+
+    try {
+      new FaviconThemeSwitcher()
+    } catch (error) {
+      console.warn('Failed to initialize favicon theme switcher:', error)
+    }
+  }
+
+  // Use only astro:page-load as it fires on initial load and navigation
+  document.addEventListener('astro:page-load', init)
+</script> <div class="layout-wrapper" id="transition-wrapper">    <div class="post-container" data-astro-cid-gjtny2mx> <main data-astro-cid-gjtny2mx> <div class="prose" data-astro-cid-gjtny2mx> <div class="gradient-mask" data-astro-cid-5gze4ep5>  </div> <script type="module">let e=null,i=!1,a=!1;function r(){if(typeof window>"u")return!1;const t=navigator.userAgent,n=navigator.platform;return!(/iP(ad|hone|od)/.test(t)||n==="MacIntel"&&navigator.maxTouchPoints>1)||!(/Safari\//.test(t)&&!/(CriOS|FxiOS|EdgiOS|OPiOS|DuckDuckGo)/.test(t))?!1:!!(window.matchMedia?.("(pointer: coarse)").matches||window.matchMedia?.("(max-width: 768px)").matches)}function o(){if(a||(e||(e=document.querySelector(".gradient-mask")),!e))return;window.scrollY>=64?e.style.opacity="1":e.style.opacity="0"}function s(){i||(i=!0,requestAnimationFrame(()=>{o(),i=!1}))}function l(){if(a=r(),e=document.querySelector(".gradient-mask"),a&&e){e.style.display="none";return}o()}document.addEventListener("astro:page-load",l);window.addEventListener("scroll",s,{passive:!0});</script> <a href="/" class="back-button" data-astro-cid-cjjlykpo> <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" data-astro-cid-cjjlykpo> <path d="M2.5 6.5H9.5C11.1569 6.5 12.5 7.84315 12.5 9.5V9.5C12.5 11.1569 11.1569 12.5 9.5 12.5H7.5M2.5 6.5L5.5 9.5M2.5 6.5L5.5 3.5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-cjjlykpo></path> </svg>
+index
+</a> <script>(function(){const contentWidth = "35rem";
+const centeredLayout = true;
+const toc = true;
+
+  ;(function () {
+    // Adjust back button position based on layout and screen size
+    function adjustBackButtonPosition() {
+      const button = document.querySelector('.back-button')
+      if (!button) return
+
+      if (!centeredLayout) {
+        button.classList.remove('fixed-position')
+        button.style.left = ''
+        return
+      }
+
+      // Calculate available margin space for positioning
+      const pageWidth = window.innerWidth
+      const contentWidthValue = parseFloat(contentWidth)
+      // Apply the same minimum width logic as in BaseLayout
+      const widthValue = Math.min(contentWidthValue, 50)
+      const shouldUseCustomWidth = widthValue > 25
+      const finalWidthValue = shouldUseCustomWidth ? widthValue : 25
+      const margin = (pageWidth - finalWidthValue * 16) / 2
+      const baseMinSpace = 11 * 16 // Base minimum space needed
+      // If toc is enabled, need additional 2.5rem (40px) space
+      const minSpace = toc ? baseMinSpace + 52 : baseMinSpace + 12
+
+      // Position button fixed on the left if there's enough space
+      if (margin >= minSpace) {
+        button.classList.add('fixed-position')
+        const basePosition = margin - baseMinSpace
+        // If toc is enabled, move 2.5rem (40px) further left
+        const leftPosition = toc ? basePosition - 40 : basePosition
+        button.style.left = `${leftPosition}px`
+      } else {
+        button.classList.remove('fixed-position')
+        button.style.left = ''
+      }
+    }
+
+    adjustBackButtonPosition()
+
+    // Use only astro:page-load as it fires on initial load and navigation
+    document.addEventListener('astro:page-load', adjustBackButtonPosition)
+    window.addEventListener('resize', adjustBackButtonPosition)
+  })()
+})();</script> <div class="toc-container" id="toc"> <nav class="toc-nav"> <ul class="toc-list" id="toc-list"> <!-- Back to top link --> <li class="toc-item toc-level-0"> <a href="#" class="toc-link toc-title" title="Back to top" data-text="Back to top"> Back to top </a> </li> <!-- TOC items -->  </ul> </nav> </div> <script>(function(){const contentWidth = "35rem";
+const centeredLayout = true;
+const toc = true;
+
+  ;(function () {
+    // Core state
+    const state = {
+      container: null,
+      links: null,
+      headings: null,
+      titleLink: null,
+      headingMap: new Map(),
+      positions: [],
+      scrollTimeout: null,
+      hasContent: false
+    }
+
+    // Initialize DOM elements
+    function initElements() {
+      state.container = document.querySelector('.toc-container')
+      if (!state.container) return false
+
+      state.links = document.querySelectorAll('.toc-link')
+      state.headings = document.querySelectorAll('h1, h2, h3')
+      state.titleLink = document.querySelector('.toc-link.toc-title')
+
+      // Build heading map
+      state.headingMap.clear()
+      state.links.forEach((link) => {
+        const href = link.getAttribute('href')
+        if (href?.startsWith('#')) {
+          state.headingMap.set(href.substring(1), link)
+        }
+      })
+
+      return true
+    }
+
+    // Check if content exists
+    function checkContent() {
+      if (!state.container || !state.links) return
+
+      const tocItems = Array.from(state.links).filter((link) => !link.classList.contains('toc-title'))
+      state.hasContent = tocItems.length > 0
+
+      if (!state.hasContent) {
+        state.container.style.display = 'none'
+      }
+    }
+
+    // Cache heading positions
+    function cachePositions() {
+      if (!state.headings?.length) return
+
+      const scrollTop = window.pageYOffset
+      state.positions = Array.from(state.headings)
+        .filter((_, index) => !(index === 0 && state.headings[0].tagName === 'H1'))
+        .map((heading) => ({
+          id: heading.id,
+          offsetTop: heading.getBoundingClientRect().top + scrollTop
+        }))
+    }
+
+    // Adjust TOC position
+    function adjustPosition() {
+      if (!state.container || !centeredLayout || !state.hasContent) {
+        if (state.container) state.container.style.display = 'none'
+        return
+      }
+
+      const pageWidth = window.innerWidth
+      const contentWidthValue = Math.max(parseFloat(contentWidth), 25)
+      const margin = (pageWidth - contentWidthValue * 16) / 2
+      const baseMinSpace = 11 * 16 // Base minimum space needed
+      const minSpace = toc ? baseMinSpace + 52 : baseMinSpace + 12
+
+      if (margin >= minSpace) {
+        state.container.style.display = 'block'
+        state.container.classList.add('fixed-position')
+        const leftPosition = toc ? margin - 176 - 40 : margin - 176
+        state.container.style.left = `${leftPosition}px`
+      } else {
+        state.container.style.display = 'none'
+        state.container.classList.remove('fixed-position')
+        state.container.style.left = ''
+      }
+    }
+
+    // Handle click events
+    function handleClick(e) {
+      const link = e.target.closest('.toc-link')
+      if (!link) return
+
+      e.preventDefault()
+
+      if (link.classList.contains('toc-title')) {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+        history.pushState(null, null, '#')
+      } else {
+        const href = link.getAttribute('href')
+        if (href?.startsWith('#')) {
+          const target = document.getElementById(href.substring(1))
+          if (target) {
+            const rect = target.getBoundingClientRect()
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop
+            const offset = rect.top + scrollTop - 96
+            window.scrollTo({ top: offset, behavior: 'smooth' })
+            history.pushState(null, null, href)
+          }
+        }
+      }
+    }
+
+    // Update active state
+    function updateActive() {
+      if (!state.links?.length || !state.positions.length) return
+
+      const scrollTop = window.pageYOffset + 100
+      let currentActive = null
+
+      // Find current active heading
+      for (let i = state.positions.length - 1; i >= 0; i--) {
+        if (scrollTop >= state.positions[i].offsetTop) {
+          currentActive = state.positions[i].id
+          break
+        }
+      }
+
+      // Update active state
+      state.links.forEach((link) => link.classList.remove('active'))
+
+      if (currentActive && state.headingMap.has(currentActive)) {
+        state.headingMap.get(currentActive).classList.add('active')
+      } else if (state.titleLink) {
+        state.titleLink.classList.add('active')
+      }
+    }
+
+    // Initialize
+    function init(retryCount = 0) {
+      const maxRetries = 5
+
+      if (initElements()) {
+        checkContent()
+        adjustPosition()
+        cachePositions()
+
+        if (state.container) {
+          state.container.removeEventListener('click', handleClick)
+          state.container.addEventListener('click', handleClick)
+        }
+
+        updateActive()
+      } else if (retryCount < maxRetries) {
+        setTimeout(() => init(retryCount + 1), 100)
+      }
+    }
+
+    // Event handlers
+    function handleScroll() {
+      if (state.scrollTimeout) {
+        cancelAnimationFrame(state.scrollTimeout)
+      }
+      state.scrollTimeout = requestAnimationFrame(updateActive)
+    }
+
+    function handleResize() {
+      adjustPosition()
+      requestAnimationFrame(cachePositions)
+    }
+
+    // Cleanup
+    function cleanup() {
+      if (state.scrollTimeout) {
+        cancelAnimationFrame(state.scrollTimeout)
+        state.scrollTimeout = null
+      }
+
+      Object.assign(state, {
+        container: null,
+        links: null,
+        headings: null,
+        titleLink: null,
+        headingMap: new Map(),
+        positions: [],
+        hasContent: false
+      })
+    }
+
+    // Event listeners
+    document.addEventListener('astro:page-load', () => {
+      cleanup()
+      init()
+    })
+
+    document.addEventListener('astro:after-swap', () => {
+      cleanup()
+      init()
+    })
+
+    // Fallback for when Astro transitions are disabled
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!state.container || !state.hasContent) {
+        init()
+      }
+    })
+
+    window.addEventListener('resize', handleResize)
+    window.addEventListener('scroll', handleScroll)
+  })()
+})();</script> <style>
+  .toc-container {
+    width: 12rem;
+    position: relative;
+    left: -0.175em;
+    opacity: 0;
+    transition: opacity 0.2s ease-out;
+    display: none;
+  }
+
+  .toc-container.fixed-position {
+    opacity: 1;
+    position: fixed;
+    top: 12rem;
+    margin-top: 0;
+    padding-left: 1rem;
+    z-index: 10;
+    left: auto;
+  }
+
+  .toc-nav {
+    font-family: var(--sans);
+  }
+
+  .toc-list,
+  .toc-list li,
+  .toc-item {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .prose .toc-container .toc-list {
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+  }
+
+  .prose .toc-container .toc-list li {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .toc-item::before,
+  .toc-item::marker {
+    display: none;
+  }
+
+  .toc-link {
+    display: block;
+    color: transparent;
+    text-decoration: none;
+    position: relative;
+    padding-left: 0;
+    height: 1.125rem;
+    width: 100%;
+    min-height: 1rem;
+    font-size: 0;
+    line-height: 1.125rem;
+    text-indent: 2rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    transition:
+      color 0.2s ease-out,
+      font-size 0.2s ease-out,
+      text-indent 0.2s ease-out;
+    cursor: pointer;
+  }
+
+  .toc-link::after {
+    content: attr(data-text);
+    position: absolute;
+    left: -0.5rem;
+    top: 0;
+    font-family: var(--sans);
+    font-size: var(--font-size-s);
+    letter-spacing: var(--spacing-m);
+    line-height: 1.125rem;
+    color: var(--text-primary);
+    opacity: 0;
+    transition:
+      opacity 0.2s ease-out,
+      left 0.2s ease-out;
+    pointer-events: none;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+
+  .toc-link:hover::after {
+    opacity: 1;
+    left: -0.75rem;
+  }
+
+  .toc-level-0 .toc-link:hover::after {
+    opacity: 0;
+  }
+
+  .toc-level-1 .toc-link:hover::before,
+  .toc-level-2 .toc-link:hover::before,
+  .toc-level-3 .toc-link:hover::before {
+    width: 0.75rem;
+    transition: width 0.1s ease-out;
+  }
+
+  .toc-link.active {
+    color: var(--text-primary);
+  }
+
+  /* Horizontal line indicators */
+  .toc-level-0 .toc-link::before,
+  .toc-level-1 .toc-link::before,
+  .toc-level-2 .toc-link::before,
+  .toc-level-3 .toc-link::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 1.75rem;
+    height: 1px;
+    background-color: var(--text-tertiary);
+    transform: translateY(-50%);
+    opacity: 0.4;
+    transition: all 0.1s ease-out;
+  }
+
+  .toc-link:hover::before,
+  .toc-link.active::before {
+    opacity: 0.8;
+    background-color: var(--text-primary);
+  }
+
+  /* Hide on mobile */
+  @media (max-width: 768px) {
+    .toc-container {
+      display: none !important;
+    }
+  }
+</style> <div class="title" data-astro-cid-gjtny2mx> <h1 data-astro-cid-gjtny2mx>Feature Mapart in Minecraft</h1> <div class="date" data-astro-cid-gjtny2mx> <time datetime="2026-02-11T00:00:00.000Z" class data-astro-cid-5mzstg4p> 2026.02.11 </time>  </div> </div> <article class="content" data-astro-cid-gjtny2mx>  <p>A tool to mix two images into a schematic file for Minecraft. Featuring the base colors of <code>crimson_stem</code> and <code>warped_stem</code> with their stripped variants, what players see is one image, while the map shows the other.</p>
+<p>The tool is built by Gemini and is open source and available on <a href="https://github.com/Lylighte/feature-mapart">GitHub</a>.</p>
+<img src="https://www.lylighte.cc/file/p/static/2026/02/feature-mapart.jpg?sign=fws0wlFPzSNZrgFbV_HGaokLOlx92ZJ4MLbP_DfznAM=:0" alt="" data-preview="true" loading="lazy" decoding="async" fetchpriority="high" class="img-placeholder">  </article> </div> </main> <script>
+  // Global handler: Automatically remove the img-placeholder class after images are loaded
+  function removeImgPlaceholder() {
+    document.querySelectorAll('img.img-placeholder').forEach(function (img) {
+      if (img.complete) {
+        img.classList.remove('img-placeholder')
+      } else {
+        // Skip if already bound
+        if (img.dataset.placeholderBound) return
+        img.dataset.placeholderBound = 'true'
+
+        img.addEventListener('load', function () {
+          img.classList.remove('img-placeholder')
+        })
+      }
+    })
+  }
+
+  // Use only astro:page-load as it fires on initial load and navigation
+  document.addEventListener('astro:page-load', removeImgPlaceholder)
+</script> <script type="module">function i(){document.querySelectorAll("[data-footnote-ref], [data-footnote-backref]").forEach(o=>{o.dataset.footnoteBound||(o.dataset.footnoteBound="true",o.addEventListener("click",s=>{s.preventDefault();const n=o.getAttribute("href");if(!n)return;const t=document.querySelector(n);if(!t)return;const r=t.getBoundingClientRect().top+window.scrollY-128;window.scrollTo({top:r});const e=t.closest("cite")||t.closest("sup")||t;e.classList.add("footnote-highlight"),e.addEventListener("animationend",()=>{e.classList.remove("footnote-highlight")},{once:!0})}))})}document.addEventListener("astro:page-load",i);</script> <script>(function(){const copyCode = true;
+
+  function initCopyCode() {
+    const copyIcon = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14" fill="currentColor">
+        <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path>
+        <path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+      </svg>
+    `
+
+    const copiedIcon = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" fill="currentColor">
+        <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+      </svg>
+    `
+
+    document.body.setAttribute('data-copy-code', copyCode ? 'enabled' : 'disabled')
+
+    if (!copyCode) {
+      return
+    }
+
+    const copyButtons = document.querySelectorAll('.copy-button')
+
+    copyButtons.forEach((button) => {
+      // Avoid initializing multiple times (important for SPA navigation)
+      if (button.dataset.copyInit) return
+      button.dataset.copyInit = '1'
+
+      // Find the closest pre element with the .copy-code-block class
+      let preElement = button.closest('.copy-code-block')
+      if (!preElement) {
+        const parent = button.parentElement
+        if (parent) {
+          preElement = parent.querySelector('.copy-code-block')
+        }
+      }
+      if (!preElement) return
+
+      const codeElement = preElement.querySelector('code')
+      if (!codeElement) return
+
+      if (!button.querySelector('svg')) {
+        button.innerHTML = copyIcon
+      }
+
+      button.style.opacity = '0'
+      button.style.pointerEvents = 'none'
+
+      // Determine the container to attach hover events
+      let container = preElement
+      const parent = button.parentElement
+      if (parent && parent.classList.contains('copy-code-wrapper')) {
+        container = parent
+      }
+
+      container.addEventListener('mouseenter', () => {
+        button.style.opacity = '1'
+        button.style.pointerEvents = 'auto'
+      })
+
+      container.addEventListener('mouseleave', () => {
+        if (!button.hasAttribute('data-copying')) {
+          button.style.opacity = '0'
+          button.style.pointerEvents = 'none'
+        }
+      })
+
+      button.addEventListener('click', async () => {
+        const codeText = codeElement.textContent || ''
+
+        try {
+          // Primary method: use modern clipboard API
+          await navigator.clipboard.writeText(codeText)
+          button.setAttribute('data-copying', 'true')
+          button.innerHTML = copiedIcon
+
+          setTimeout(() => {
+            if (!container.matches(':hover')) {
+              button.style.opacity = '0'
+              button.style.pointerEvents = 'none'
+            }
+            button.removeAttribute('data-copying')
+
+            setTimeout(() => {
+              button.innerHTML = copyIcon
+            }, 500)
+          }, 1500)
+        } catch (err) {
+          console.error('Failed to copy code:', err)
+
+          // Fallback method: create temporary textarea for older browsers
+          try {
+            const textArea = document.createElement('textarea')
+            textArea.value = codeText
+            textArea.style.position = 'fixed'
+            textArea.style.opacity = '0'
+            document.body.appendChild(textArea)
+            textArea.focus()
+            textArea.select()
+
+            navigator.clipboard
+              .writeText(codeText)
+              .then(() => {
+                document.body.removeChild(textArea)
+              })
+              .catch(() => {
+                console.error('Both clipboard methods failed')
+                document.body.removeChild(textArea)
+              })
+          } catch (fallbackErr) {
+            console.error('All clipboard methods failed:', fallbackErr)
+          }
+
+          button.setAttribute('data-copying', 'true')
+          button.innerHTML = copiedIcon
+
+          setTimeout(() => {
+            if (!container.matches(':hover')) {
+              button.style.opacity = '0'
+              button.style.pointerEvents = 'none'
+            }
+            button.removeAttribute('data-copying')
+
+            setTimeout(() => {
+              button.innerHTML = copyIcon
+            }, 500)
+          }, 1500)
+        }
+      })
+    })
+  }
+
+  // Use only astro:page-load as it fires on initial load and navigation
+  document.addEventListener('astro:page-load', initCopyCode)
+})();</script> <style>
+  /* Ensure the positioned ancestor is correct */
+  .copy-code-wrapper {
+    position: relative !important;
+  }
+
+  /* Keep for backward compatibility */
+  .copy-code-block {
+    position: relative !important;
+  }
+
+  .copy-button {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    width: 2rem;
+    height: 2rem;
+    z-index: 10;
+    background: var(--bg);
+    border-radius: 0.375rem;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s ease-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+    backdrop-filter: blur(48px);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  body[data-copy-code='disabled'] .copy-button {
+    display: none !important;
+  }
+
+  .copy-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--code-bg);
+    border-radius: 0.325rem;
+    opacity: 0;
+    transition: opacity 0.15s ease-out;
+    pointer-events: none;
+  }
+
+  .copy-button:hover::before {
+    opacity: 1;
+  }
+
+  .copy-button:hover {
+    color: var(--text-primary);
+  }
+
+  .copy-button svg {
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+</style> <script type="module">let c=null;function u(t){try{const e=`github-repo-${t}`,r=localStorage.getItem(e);if(!r)return null;const o=JSON.parse(r),n=Date.now(),a=3600*1e3;return n-o.timestamp>a?(localStorage.removeItem(e),null):o.data}catch(e){return console.warn("Failed to read from cache:",e),null}}function f(t,e){try{const r=`github-repo-${t}`,o={data:e,timestamp:Date.now()};localStorage.setItem(r,JSON.stringify(o))}catch(r){console.warn("Failed to save to cache:",r)}}function s(t,e){const r=new Intl.NumberFormat("en",{notation:"compact",maximumFractionDigits:1});t.avatar&&e.owner?.avatar_url&&(t.avatar.style.backgroundImage=`url(${e.owner.avatar_url})`),t.desc&&(t.desc.textContent=e.description??"No description"),t.stars&&(t.stars.textContent=r.format(e.stargazers_count??0)),t.forks&&(t.forks.textContent=r.format(e.forks_count??0)),t.license&&(t.license.textContent=e.license?.spdx_id??"No License")}async function l(t){const e=t.dataset.repo;if(!e)return;const r={avatar:t.querySelector(".gc-owner-avatar"),desc:t.querySelector(".gc-repo-description"),stars:t.querySelector(".gc-stars-count"),forks:t.querySelector(".gc-forks-count"),license:t.querySelector(".gc-license-info")},o=u(e);if(o){s(r,o);return}try{const n=await fetch(`https://api.github.com/repos/${e}`);if(!n.ok){r.desc&&(r.desc.textContent="--");return}const a=await n.json();f(e,a),s(r,a)}catch(n){console.error(`Failed to fetch ${e}:`,n),r.desc&&(r.desc.textContent="--")}}function i(){c?.disconnect();const t=document.getElementsByClassName("gc-container");t.length!==0&&(c=new IntersectionObserver(e=>{e.forEach(r=>{r.isIntersecting&&(l(r.target),c?.unobserve(r.target))})},{rootMargin:"200px"}),Array.from(t).forEach(e=>c?.observe(e)))}i();document.addEventListener("astro:page-load",i);</script> <style>
+  .prose .gc-container {
+    display: block;
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem 1.25rem 0.75rem 1.25rem;
+    margin: 1.25rem 0 1.75rem 0;
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.2s ease-out;
+    background: var(--astro-code-background);
+  }
+
+  .prose .gc-container:hover {
+    background: color-mix(in srgb, var(--selection) 75%, transparent);
+    text-decoration: none;
+  }
+
+  .prose .gc-title-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .prose .gc-owner-avatar {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background-color: var(--border);
+    flex-shrink: 0;
+  }
+
+  .prose .gc-repo-title {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-regular);
+    color: var(--text-primary);
+    flex-grow: 1;
+  }
+
+  .prose .gc-repo-title strong {
+    font-weight: var(--font-weight-bold);
+  }
+
+  .prose .gc-slash {
+    color: var(--text-secondary);
+    margin: 0 0.375rem;
+  }
+
+  .prose .gc-github-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    color: var(--text-primary);
+    flex-shrink: 0;
+  }
+
+  .prose .gc-repo-description {
+    font-size: var(--font-size-m);
+    color: var(--text-primary);
+    opacity: 0.6;
+    margin: 0 0 0.75rem 0;
+    line-height: 1.4;
+  }
+
+  .prose .gc-info-bar {
+    display: flex;
+    align-items: center;
+    color: var(--text-primary);
+    opacity: 0.6;
+    gap: 0.35rem;
+  }
+
+  .prose .gc-info-bar .gc-stars-count,
+  .prose .gc-info-bar .gc-forks-count,
+  .prose .gc-info-bar .gc-license-info {
+    margin-right: 0.675rem;
+    font-size: var(--font-size-s);
+  }
+
+  .prose .gc-info-icon {
+    color: var(--text-primary);
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+</style> <script type="module">function s(){const e=document.querySelectorAll(".twitter-tweet");if(e.length===0||document.querySelector('script[src*="platform.twitter.com/widgets.js"]'))return;const c=window.matchMedia("(prefers-color-scheme: dark)").matches;e.forEach(t=>{t.setAttribute("data-theme",c?"dark":"light")});const r=()=>{const t=document.createElement("script");t.src="https://platform.twitter.com/widgets.js",t.async=!0,document.head.appendChild(t)};"requestIdleCallback"in window?requestIdleCallback(r,{timeout:2e3}):setTimeout(r,100)}document.addEventListener("astro:page-load",s);</script> <style>
+  .prose .x-card {
+    width: 100%;
+    margin: 1em auto;
+    text-align: center;
+  }
+
+  .prose .x-card > * {
+    display: inline-block;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  .prose .x-card iframe {
+    max-width: 100%;
+    width: auto;
+  }
+</style> <script>
+  function loadNeoDBCards() {
+    const allContainers = document.querySelectorAll('.neodb-card-container')
+
+    allContainers.forEach((container) => {
+      if (!container.hasAttribute('data-url')) {
+        container.remove()
+      }
+    })
+
+    const containers = document.querySelectorAll('.neodb-card-container[data-url]')
+
+    if (containers.length === 0) {
+      return
+    }
+
+    const renderError = (elem) => {
+      elem.innerHTML = `<div class="neodb-card error"><p class="neodb-error">🔴&nbsp;&nbsp;Error</p></div>`
+    }
+
+    const renderCard = (elem, data, targetUrl) => {
+      const itemRating = data?.rating && data.rating > 0 ? parseFloat(data.rating) : null
+      const coverUrl = data.cover_image_url || data.cover_url
+      const category = data.category || ''
+
+      const getPreferredTitle = () => {
+        // Special handling for music/album types only
+        if (category === 'music' || category === 'album') {
+          if (Array.isArray(data.localized_title)) {
+            const nonZh = data.localized_title.find((t) => t.lang !== 'zh-cn' && t.text)
+            if (nonZh) return nonZh.text
+            const zh = data.localized_title.find((t) => t.lang === 'zh-cn' && t.text)
+            if (zh) return zh.text
+          }
+        }
+        return data.title || data.name || ''
+      }
+
+      const title = getPreferredTitle()
+
+      const isSquare = category === 'music' || category === 'podcast'
+      const coverClass = isSquare ? 'music' : 'other'
+      const cardHeightClass = isSquare ? 'compact' : 'standard'
+
+      // Convert rating to star percentage with half-star precision: 10 points = 100% (5 stars)
+      const starPercentage = itemRating !== null ? Math.round((itemRating / 10) * 10) * 10 : null
+
+      // Build field info
+      const fieldInfo = []
+
+      if (category === 'movie' || category === 'tv' || category === 'tv/season') {
+        // Movie/TV: Director, Cast, Genre, Release Year
+        if (data.director && data.director.length > 0) {
+          const directors = Array.isArray(data.director) ? data.director.join(', ') : data.director
+          fieldInfo.push(`导演: ${directors}`)
+        }
+        if (data.actor && data.actor.length > 0) {
+          const actors = Array.isArray(data.actor) ? data.actor.join(', ') : data.actor
+          fieldInfo.push(`演员: ${actors}`)
+        }
+        if (data.genre && data.genre.length > 0) {
+          const genres = Array.isArray(data.genre) ? data.genre.join(', ') : data.genre
+          fieldInfo.push(`类型: ${genres}`)
+        }
+        // Add release year - "Release Date" for movies, "Premiere" for TV
+        if (data.year) {
+          const timeLabel = category === 'movie' ? '上映时间' : '首播'
+          fieldInfo.push(`${timeLabel}: ${data.year}`)
+        }
+      } else if (category === 'music' || category === 'album') {
+        // Music: Artist, Genre, Release Date
+        if (data.artist && data.artist.length > 0) {
+          // Only show the first artist for music/album
+          const artist = Array.isArray(data.artist) ? data.artist[0] : data.artist
+          fieldInfo.push(`艺术家: ${artist}`)
+        }
+        if (data.genre && data.genre.length > 0) {
+          const genres = Array.isArray(data.genre) ? data.genre.join(', ') : data.genre
+          fieldInfo.push(`流派: ${genres}`)
+        }
+        if (data.release_date) {
+          fieldInfo.push(`发行时间: ${data.release_date}`)
+        }
+      } else if (category === 'book') {
+        // Book: Author, Publisher
+        if (data.author && data.author.length > 0) {
+          const authors = Array.isArray(data.author) ? data.author.join(', ') : data.author
+          fieldInfo.push(`作者: ${authors}`)
+        }
+        // Check multiple possible publisher fields
+        const publisher = data.publisher || data.pub_house || data.company
+        if (publisher && (Array.isArray(publisher) ? publisher.length > 0 : publisher)) {
+          const publishers = Array.isArray(publisher) ? publisher.join(', ') : publisher
+          fieldInfo.push(`出版社: ${publishers}`)
+        }
+      } else if (category === 'game') {
+        // Game: Developer, Genre, Release Date
+        if (data.developer && data.developer.length > 0) {
+          const developers = Array.isArray(data.developer) ? data.developer.join(', ') : data.developer
+          fieldInfo.push(`开发者: ${developers}`)
+        }
+        if (data.genre && data.genre.length > 0) {
+          const genres = Array.isArray(data.genre) ? data.genre.join(', ') : data.genre
+          fieldInfo.push(`类型: ${genres}`)
+        }
+        if (data.release_date) {
+          fieldInfo.push(`发行时间: ${data.release_date}`)
+        }
+      } else if (category === 'podcast') {
+        // Podcast: Host, Genre
+        const host = data.host || data.artist || data.creator
+        if (host && (Array.isArray(host) ? host.length > 0 : host)) {
+          const hosts = Array.isArray(host) ? host.join(', ') : host
+          fieldInfo.push(`主播: ${hosts}`)
+        }
+        if (data.genre && data.genre.length > 0) {
+          const genres = Array.isArray(data.genre) ? data.genre.join(', ') : data.genre
+          fieldInfo.push(`类型: ${genres}`)
+        }
+      }
+
+      elem.innerHTML = `
+        <a class="neodb-card ${cardHeightClass}" href="${targetUrl}" target="_blank" rel="noopener noreferrer">
+          ${coverUrl ? `<img class="neodb-cover ${coverClass}" src="${coverUrl}" alt="${title || ''}" loading="lazy" />` : `<div class="neodb-cover ${coverClass}" style="background: #f3f4f6;"></div>`}
+          <div class="neodb-info">
+            <div class="neodb-title">${title || ''}</div>
+            ${
+              starPercentage !== null
+                ? `<div class="rating">
+              <span class="allstarbg">
+                <span class="allstarfg" style="width:${starPercentage}%"></span>
+              </span>
+              <span class="rating_nums">${itemRating.toFixed(1)}</span>
+            </div>`
+                : `<div class="rating">
+              <span class="allstargray"></span>
+            </div>`
+            }
+            ${fieldInfo
+              .map((info) => {
+                if (info.startsWith('<div class="neodb-desc">')) {
+                  return info
+                }
+                return `<div class="neodb-field">${info}</div>`
+              })
+              .join('')}
+          </div>
+        </a>
+      `
+    }
+
+    // Build fetch promises for parallel execution
+    const fetchPromises = Array.from(containers).map(async (container) => {
+      const url = container.getAttribute('data-url')
+
+      if (!url) return
+
+      let fetchUrl = ''
+      const neodbUrlPattern = /neodb\.social\/(movie|book|music|album|game|tv\/season|tv|podcast)\/([\w-]+)/
+      const isNeoDbUrl = neodbUrlPattern.test(url)
+
+      if (isNeoDbUrl) {
+        const match = url.match(neodbUrlPattern)
+        let category = match ? match[1] : ''
+        const uuid = match ? match[2] : ''
+
+        if (category === 'tv/season') {
+          category = 'tv/season'
+        }
+
+        if (uuid && category) {
+          fetchUrl = `https://neodb.social/api/${category}/${uuid}`
+        }
+      } else {
+        fetchUrl = `https://neodb.social/api/catalog/fetch?url=${encodeURIComponent(url)}`
+      }
+
+      if (fetchUrl) {
+        try {
+          const res = await fetch(fetchUrl, {
+            mode: 'cors',
+            headers: {
+              Accept: 'application/json'
+            }
+          })
+          if (!res.ok) throw new Error(`Response ${res.status}`)
+          const json = await res.json()
+          const data = json.data ? json.data : json
+          renderCard(container, data, url)
+        } catch {
+          renderError(container)
+        }
+      } else {
+        renderError(container)
+      }
+    })
+
+    // Execute all fetches in parallel
+    Promise.allSettled(fetchPromises)
+  }
+
+  loadNeoDBCards()
+  document.addEventListener('astro:page-load', loadNeoDBCards)
+</script> <style>
+  .prose .neodb-card {
+    width: 100%;
+    height: 100%;
+    background: var(--astro-code-background);
+    color: var(--text-primary);
+    border-radius: 8px;
+    display: flex;
+    position: relative;
+    text-decoration: none !important;
+    transition: background 0.2s ease-out;
+    margin: 1.25rem 0 1.75rem 0;
+    overflow: hidden;
+  }
+
+  .prose .neodb-card.compact {
+    min-height: 6rem;
+  }
+
+  .prose .neodb-card.standard {
+    min-height: 9rem;
+  }
+
+  .prose .neodb-card:hover {
+    background: color-mix(in srgb, var(--selection) 75%, transparent);
+  }
+
+  .prose .neodb-card.error:hover {
+    background: var(--astro-code-background) !important;
+    cursor: default;
+  }
+
+  .prose .neodb-cover {
+    width: 96px !important;
+    border-radius: 6px;
+    margin: 1rem;
+  }
+
+  .prose .neodb-cover.music {
+    height: 96px !important; /* 1:1 for music */
+  }
+
+  .prose .neodb-cover.other {
+    height: 144px !important; /* 9:16 for other types */
+  }
+
+  .prose .neodb-info {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    margin: 1rem 1rem 1rem 0;
+  }
+
+  .prose .neodb-field {
+    font-size: var(--font-size-s);
+    color: var(--text-primary);
+    line-height: 1.4;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .prose .neodb-artist {
+    font-size: var(--font-size-s);
+    color: var(--text-primary);
+  }
+
+  .prose .no-rating {
+    font-size: var(--font-size-s);
+    color: var(--text-primary);
+    line-height: 1;
+    margin: 0 0 0.25rem 0;
+  }
+
+  .prose .neodb-title {
+    color: var(--text-primary);
+    font-weight: var(--font-weight-bold);
+    line-height: 1.35;
+    margin-bottom: 0.125rem;
+  }
+
+  .prose .neodb-title a {
+    text-decoration: none !important;
+  }
+
+  .prose .neodb-desc {
+    font-size: var(--font-size-s);
+    color: var(--text-primary);
+    margin-top: 0.25rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-wrap: break-word;
+    max-width: 100%;
+  }
+
+  .prose .rating {
+    margin: 0 0 0.25rem 0;
+    font-size: var(--font-size-s);
+    line-height: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  .prose .rating .allstarbg {
+    position: relative;
+    color: #f99b01;
+    height: 1rem;
+    width: 5rem;
+    background-size: auto 100%;
+    margin-right: 0.25rem;
+    background-repeat: repeat;
+    background-image: url(data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iaWNvbiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMzIiIGhlaWdodD0iMzIiPjxwYXRoIGQ9Ik05MDguMSAzNTMuMWwtMjUzLjktMzYuOUw1NDAuNyA4Ni4xYy0zLjEtNi4zLTguMi0xMS40LTE0LjUtMTQuNS0xNS44LTcuOC0zNS0xLjMtNDIuOSAxNC41TDM2OS44IDMxNi4ybC0yNTMuOSAzNi45Yy03IDEtMTMuNCA0LjMtMTguMyA5LjMtMTIuMyAxMi43LTEyLjEgMzIuOS42IDQ1LjNsMTgzLjcgMTc5LjEtNDMuNCAyNTIuOWMtMS4yIDYuOS0uMSAxNC4xIDMuMiAyMC4zIDguMiAxNS42IDI3LjYgMjEuNyA0My4yIDEzLjRMNTEyIDc1NGwyMjcuMSAxMTkuNGM2LjIgMy4zIDEzLjQgNC40IDIwLjMgMy4yIDE3LjQtMyAyOS4xLTE5LjUgMjYuMS0zNi45bC00My40LTI1Mi45IDE4My43LTE3OS4xYzUtNC45IDguMy0xMS4zIDkuMy0xOC4zIDIuNy0xNy41LTkuNS0zMy43LTI3LTM2LjN6TTY2NC44IDU2MS42bDM2LjEgMjEwLjNMNTEyIDY3Mi43IDMyMy4xIDc3MmwzNi4xLTIxMC4zLTE1Mi44LTE0OUw0MTcuNiAzODIgNTEyIDE5MC43IDYwNi40IDM4MmwyMTEuMiAzMC43LTE1Mi44IDE0OC45eiIgZmlsbD0iI2Y5OWIwMSIvPjwvc3ZnPg==);
+  }
+
+  .prose .rating .allstarfg {
+    position: absolute;
+    left: 0;
+    color: #f99b01;
+    height: 1rem;
+    overflow: hidden;
+    background-size: auto 100%;
+    background-repeat: repeat;
+    background-image: url(data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iaWNvbiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMzIiIGhlaWdodD0iMzIiPjxwYXRoIGQ9Ik05MDguMSAzNTMuMWwtMjUzLjktMzYuOUw1NDAuNyA4Ni4xYy0zLjEtNi4zLTguMi0xMS40LTE0LjUtMTQuNS0xNS44LTcuOC0zNS0xLjMtNDIuOSAxNC41TDM2OS44IDMxNi4ybC0yNTMuOSAzNi45Yy03IDEtMTMuNCA0LjMtMTguMyA5LjMtMTIuMyAxMi43LTEyLjEgMzIuOS42IDQ1LjNsMTgzLjcgMTc5LjEtNDMuNCAyNTIuOWMtMS4yIDYuOS0uMSAxNC4xIDMuMiAyMC4zIDguMiAxNS42IDI3LjYgMjEuNyA0My4yIDEzLjRMNTEyIDc1NGwyMjcuMSAxMTkuNGM2LjIgMy4zIDEzLjQgNC40IDIwLjMgMy4yIDE3LjQtMyAyOS4xLTE5LjUgMjYuMS0zNi45bC00My40LTI1Mi45IDE4My43LTE3OS4xYzUtNC45IDguMy0xMS4zIDkuMy0xOC4zIDIuNy0xNy41LTkuNS0zMy43LTI3LTM2LjN6IiBmaWxsPSIjZjk5YjAxIi8+PC9zdmc+);
+  }
+
+  .prose .rating_nums {
+    font-size: var(--font-size-s);
+    color: var(--text-primary);
+  }
+
+  .prose .rating .allstargray {
+    position: relative;
+    height: 1rem;
+    width: 5rem;
+    margin-right: 8px;
+    background-color: var(--text-primary);
+    opacity: 0.15;
+    -webkit-mask-image: url(data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iaWNvbiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMzIiIGhlaWdodD0iMzIiPjxwYXRoIGQ9Ik05MDguMSAzNTMuMWwtMjUzLjktMzYuOUw1NDAuNyA4Ni4xYy0zLjEtNi4zLTguMi0xMS40LTE0LjUtMTQuNS0xNS44LTcuOC0zNS0xLjMtNDIuOSAxNC41TDM2OS44IDMxNi4ybC0yNTMuOSAzNi45Yy03IDEtMTMuNCA0LjMtMTguMyA5LjMtMTIuMyAxMi43LTEyLjEgMzIuOS42IDQ1LjNsMTgzLjcgMTc5LjEtNDMuNCAyNTIuOWMtMS4yIDYuOS0uMSAxNC4xIDMuMiAyMC4zIDguMiAxNS42IDI3LjYgMjEuNyA0My4yIDEzLjRMNTEyIDc1NGwyMjcuMSAxMTkuNGM2LjIgMy4zIDEzLjQgNC40IDIwLjMgMy4yIDE3LjQtMyAyOS4xLTE5LjUgMjYuMS0zNi45bC00My40LTI1Mi45IDE4My43LTE3OS4xYzUtNC45IDguMy0xMS4zIDkuMy0xOC4zIDIuNy0xNy41LTkuNS0zMy43LTI3LTM2LjN6IiBmaWxsPSIjZmZmZmZmIi8+PC9zdmc+);
+    mask-image: url(data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iaWNvbiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMzIiIGhlaWdodD0iMzIiPjxwYXRoIGQ9Ik05MDguMSAzNTMuMWwtMjUzLjktMzYuOUw1NDAuNyA4Ni4xYy0zLjEtNi4zLTguMi0xMS40LTE0LjUtMTQuNS0xNS44LTcuOC0zNS0xLjMtNDIuOSAxNC41TDM2OS44IDMxNi4ybC0yNTMuOSAzNi45Yy03IDEtMTMuNCA0LjMtMTguMyA5LjMtMTIuMyAxMi43LTEyLjEgMzIuOS42IDQ1LjNsMTgzLjcgMTc5LjEtNDMuNCAyNTIuOWMtMS4yIDYuOS0uMSAxNC4xIDMuMiAyMC4zIDguMiAxNS42IDI3LjYgMjEuNyA0My4yIDEzLjRMNTEyIDc1NGwyMjcuMSAxMTkuNGM2LjIgMy4zIDEzLjQgNC40IDIwLjMgMy4yIDE3LjQtMyAyOS4xLTE5LjUgMjYuMS0zNi45bC00My40LTI1Mi45IDE4My43LTE3OS4xYzUtNC45IDguMy0xMS4zIDkuMy0xOC4zIDIuNy0xNy41LTkuNS0zMy43LTI3LTM2LjN6IiBmaWxsPSIjZmZmZmZmIi8+PC9zdmc+);
+    -webkit-mask-size: auto 100%;
+    mask-size: auto 100%;
+    -webkit-mask-repeat: repeat;
+    mask-repeat: repeat;
+  }
+
+  /* Skeleton/Loading card styles */
+  .prose .neodb-loading.music {
+    min-height: 8rem !important;
+    background: var(--astro-code-background);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .prose .neodb-loading.other {
+    min-height: 11rem !important;
+    background: var(--astro-code-background);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .prose .neodb-error {
+    font-size: var(--font-size-m);
+    margin: 1.5rem;
+  }
+</style> <div id="image-viewer" class="image-viewer" data-astro-cid-66hmb7oq> <img id="image-viewer-img" src="" alt="" data-astro-cid-66hmb7oq> </div> <script type="module">function l(){const e=document.getElementById("image-viewer"),i=document.getElementById("image-viewer-img");if(!e||!i||i.tagName!=="IMG"||e.dataset.imageViewerInitialized)return;e.dataset.imageViewerInitialized="true";function u(t,o){i&&t&&(i.src=t,i.alt=o||""),e.offsetWidth,e.classList.add("active"),document.body.classList.add("image-viewer-open"),document.body.style.overflow="hidden",document.body.dataset.scrollY=window.scrollY.toString(),e.style.cursor="auto",setTimeout(()=>{e.style.cursor=""},10)}function r(){e.classList.remove("active"),document.body.classList.remove("image-viewer-open"),document.body.style.overflow=""}e.addEventListener("transitionend",t=>{t.propertyName==="opacity"&&!e.classList.contains("active")&&(i&&(i.src="",i.alt=""),e.style.cursor="auto",setTimeout(()=>{e.style.cursor=""},10))});function a(){document.querySelectorAll('img[data-preview="true"]').forEach(o=>{const s=o;s.dataset.imageViewerBound||(s.dataset.imageViewerBound="true",s.style.cursor="pointer",s.addEventListener("click",c=>{c.preventDefault();const d=c.target;u(d.src,d.alt||"")}))})}e?.addEventListener("click",r),e?.addEventListener("touchmove",t=>{e.classList.contains("active")&&t.preventDefault()},{passive:!1}),document.addEventListener("keydown",t=>{t.key==="Escape"&&e.classList.contains("active")&&r()}),a();const n=document.querySelector(".prose")||document.querySelector(".content")||document.querySelector("article");n&&new MutationObserver(()=>{a()}).observe(n,{childList:!0,subtree:!0}),e.classList.remove("active")}document.addEventListener("astro:page-load",l);</script> <script type="module">let c=null;const s=new Map;async function h(n){if(s.has(n))return s.get(n);try{const l=`/api/proxy?url=${encodeURIComponent(n)}`,t=new AbortController,e=setTimeout(()=>t.abort(),3e3),a=await fetch(l,{signal:t.signal});if(clearTimeout(e),!a.ok)throw new Error("Failed to fetch metadata");const i=await a.text(),r=new DOMParser().parseFromString(i,"text/html"),m=r.querySelector('meta[property="og:title"]')?.getAttribute("content")||r.querySelector('meta[name="twitter:title"]')?.getAttribute("content")||r.querySelector("title")?.textContent||"",d=r.querySelector('meta[property="og:description"]')?.getAttribute("content")||r.querySelector('meta[name="twitter:description"]')?.getAttribute("content")||r.querySelector('meta[name="description"]')?.getAttribute("content")||"",g=r.querySelector('meta[property="og:image"]')?.getAttribute("content")||r.querySelector('meta[name="twitter:image"]')?.getAttribute("content")||"",y=r.querySelector('meta[property="og:image:alt"]')?.getAttribute("content")||m||"",u={title:m?.trim()||"",description:d?.trim()||"",image:g?.trim()||"",imageAlt:y?.trim()||""};return s.set(n,u),u}catch{return null}}async function f(n){const l=n.dataset.url;if(l)try{const t=await h(l);if(!t)return;const e=n.querySelector(".link-card-title");e&&(t.title&&t.title.trim()?(e.textContent=t.title,e.style.display="block"):e.style.display="none");const a=n.querySelector(".link-card-description");a&&(t.description&&t.description.trim()?(a.textContent=t.description,a.style.display="block"):(a.style.display="none",a.textContent=""));const i=n.querySelector(".link-card-image"),o=n.querySelector(".link-card-image img");i&&o&&t.image&&(o.src=t.image,o.alt=t.imageAlt,i.style.display="block")}catch{}}function p(){c?.disconnect();const n=document.getElementsByClassName("link-card");n.length!==0&&(c=new IntersectionObserver(l=>{const t=l.filter(e=>e.isIntersecting).map(e=>e.target);t.length>0&&(t.forEach(e=>{const a=e.dataset.url;if(a)try{const i=new URL(a).hostname.replace("www.",""),o=e.querySelector(".link-card-url");if(o){const r=o.querySelector("span");r?r.textContent=i:o.innerHTML=`
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" fill="currentColor">
+                        <path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path>
+                      </svg>
+                      <span>${i}</span>
+                    `}}catch{const i=e.querySelector(".link-card-url");if(i){const o=i.querySelector("span");o?o.textContent="invalid-url":i.innerHTML=`
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" fill="currentColor">
+                        <path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path>
+                      </svg>
+                      <span>invalid-url</span>
+                    `}}}),Promise.allSettled(t.map(e=>f(e))).then(()=>{t.forEach(e=>c?.unobserve(e))}))},{rootMargin:"200px"}),Array.from(n).forEach(l=>c?.observe(l)))}p();document.addEventListener("astro:page-load",p);</script> <style>
+  .prose .link-card {
+    display: flex;
+    flex-direction: column;
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    background: var(--astro-code-background);
+    min-height: 22.75px;
+    margin: 1.25rem 0 1.75rem 0;
+    transition: background 0.2s ease-out;
+  }
+
+  .prose .link-card:hover {
+    background: color-mix(in srgb, var(--selection) 75%, transparent);
+    text-decoration: none;
+  }
+
+  .prose .link-card-content {
+    padding: 0.75rem 1.25rem 0.75rem 1.25rem;
+    order: 2;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .prose .link-card-image-outer {
+    padding: 0.5rem 0.5rem 0 0.5rem;
+    order: 1;
+  }
+
+  /* Hide image outer container when no image is displayed */
+  .prose .link-card-image-outer:has(.link-card-image[style*='display: none']),
+  .prose .link-card-image-outer:not(:has(.link-card-image[style*='display: block'])) {
+    display: none;
+  }
+
+  .prose .link-card-image {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    /* Fallback for browsers that don't support aspect-ratio */
+    height: 0;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio (9/16 = 0.5625) */
+    overflow: hidden;
+    background: var(--astro-code-background);
+    position: relative;
+    margin: 0;
+    padding: 0;
+    border-radius: 6px;
+  }
+
+  /* Modern browsers with aspect-ratio support */
+  @supports (aspect-ratio: 16 / 9) {
+    .prose .link-card-image {
+      height: auto;
+      padding-bottom: 0;
+    }
+  }
+
+  .prose .link-card-image img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    margin: 0;
+    padding: 0;
+  }
+
+  .prose .link-card-title {
+    font-size: var(--font-size-m);
+    font-weight: var(--font-weight-bold);
+    color: var(--text-primary);
+    margin: 0.25rem 0 0 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 1rem;
+    order: 1;
+  }
+
+  .prose .link-card .link-card-description {
+    font-size: var(--font-size-m);
+    color: var(--text-primary);
+    opacity: 0.6;
+    margin: 0;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    word-wrap: break-word !important;
+    /* Fallback for older browsers */
+    max-height: calc(1.4em * 2) !important;
+    order: 2;
+  }
+
+  /* Hide description when display is set to none */
+  .prose .link-card .link-card-description[style*='display: none'] {
+    display: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  /* Modern browsers with line-clamp support */
+  @supports (-webkit-line-clamp: 2) {
+    .prose .link-card .link-card-description {
+      max-height: none !important;
+    }
+  }
+
+  .prose .link-card-url {
+    color: var(--text-tertiary);
+    letter-spacing: 0.015em;
+    margin: 0.25rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.325rem;
+    order: 3;
+  }
+
+  .prose .link-card-url svg {
+    width: 0.875em;
+    height: 0.875em;
+    flex-shrink: 0;
+    vertical-align: middle;
+  }
+
+  .prose .link-card-url span {
+    font-size: var(--font-size-s);
+    vertical-align: baseline;
+  }
+
+  .prose .link-card:not(:has(.link-card-image[style*='display: block'])) {
+    padding: 0.5rem 1.25rem 0.5rem 1.25rem;
+  }
+  .prose .link-card:has(.link-card-image[style*='display: block']) .link-card-content {
+    padding: 0.5rem 1.25rem 0.5rem 1.25rem;
+  }
+
+  .prose .link-card:not(:has(.link-card-image[style*='display: block'])) .link-card-content {
+    padding: 0;
+  }
+</style> <footer data-astro-cid-35ed7um5> <div class="footer-content" data-astro-cid-35ed7um5> <div class="copyright" data-astro-cid-35ed7um5> <span class="date" data-astro-cid-35ed7um5>
+&copy;
+2026 </span> Lylighte </div> <div class="powered-by" data-astro-cid-35ed7um5>
+Powered by  <a href="https://astro.build" data-astro-cid-35ed7um5>Astro</a> &  <a href="https://github.com/the3ash/astro-chiri" data-astro-cid-35ed7um5>Chiri</a> </div> </div> <div class="footer-content" data-astro-cid-35ed7um5> <div class="icp" data-astro-cid-35ed7um5> <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer" data-astro-cid-35ed7um5>
+苏ICP备2025196817号-1
+</a> </div> <div class="icp" data-astro-cid-35ed7um5> <a href="https://beian.mps.gov.cn/#/query/webSearch?code=32130202081405" target="_blank" rel="noopener noreferrer" data-astro-cid-35ed7um5>
+苏公网安备 32130202081405号
+</a> </div> </div> </footer> </div>   </div> <script>
+  // Cleanup hover states after Astro page load and on touch events
+  function cleanupHover() {
+    const hoveredLinks = document.querySelectorAll('ul a:hover')
+    hoveredLinks.forEach((link) => {
+      link.style.opacity = ''
+    })
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    setTimeout(cleanupHover, 50)
+  })
+
+  // Add touch event listener for touch devices
+  document.addEventListener('touchstart', cleanupHover, { passive: true })
+</script> <style>
+  @supports (view-transition-name: none) {
+    @media not (prefers-reduced-motion: reduce) {
+      ::view-transition-old(root) {
+        animation: fade-out 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      }
+
+      ::view-transition-new(root) {
+        opacity: 0;
+        animation: fade-in 0.4s ease 0.2s forwards;
+        will-change: filter, opacity, transform;
+      }
+    }
+  }
+
+  @keyframes fade-out {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+      filter: blur(8px);
+      transform: translateZ(0);
+    }
+    30% {
+      opacity: 0.5;
+      filter: blur(4px);
+      transform: translateZ(0);
+    }
+    100% {
+      opacity: 1;
+      filter: blur(0);
+      transform: translateZ(0);
+    }
+  }
+</style> <script>(function(){const fadeAnimation = true;
+
+      if (!fadeAnimation) {
+        const dispatchPageLoad = () => {
+          document.dispatchEvent(new Event('astro:page-load'))
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', dispatchPageLoad, { once: true })
+        } else {
+          queueMicrotask(dispatchPageLoad)
+        }
+      }
+    })();</script> </body> </html>

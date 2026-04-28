@@ -1,0 +1,347 @@
+<!DOCTYPE html><html lang="en-US"> <head><!--
+  This is a critical style block to prevent flashing on page load in dark mode.
+  It is injected into the <head> of the document before the main stylesheets are loaded.
+--><style>
+  :root {
+    --bg: #ffffff;
+  }
+
+  html.dark {
+    --bg: #1c1c1c;
+  }
+
+  html {
+    background-color: var(--bg);
+    color-scheme: light;
+  }
+
+  html.dark {
+    color-scheme: dark;
+  }
+</style><script>
+  // Global Theme Manager
+  ;(function () {
+    // Prevent duplicate initialization
+    if (window.ThemeManager && window.ThemeManager.initialized) {
+      return
+    }
+
+    window.ThemeManager = {
+      STORAGE_KEY: 'chiri-theme',
+      initialized: false,
+
+      getSystemTheme() {
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+      },
+
+      getStoredTheme() {
+        try {
+          return localStorage.getItem(this.STORAGE_KEY)
+        } catch {
+          return null
+        }
+      },
+
+      setStoredTheme(theme) {
+        try {
+          if (theme === 'system') {
+            localStorage.removeItem(this.STORAGE_KEY)
+          } else {
+            localStorage.setItem(this.STORAGE_KEY, theme)
+          }
+        } catch (e) {
+          console.warn('Failed to store theme preference:', e)
+        }
+      },
+
+      getEffectiveTheme() {
+        const stored = this.getStoredTheme()
+        return stored || this.getSystemTheme()
+      },
+
+      isUsingSystemTheme() {
+        return this.getStoredTheme() === null
+      },
+
+      applyTheme(theme) {
+        document.documentElement.classList.remove('light', 'dark')
+        document.documentElement.classList.add(theme)
+
+        // Dispatch event for other components
+        document.dispatchEvent(
+          new CustomEvent('themechange', {
+            detail: {
+              theme,
+              isUserChoice: !this.isUsingSystemTheme(),
+              isSystemTheme: this.isUsingSystemTheme()
+            }
+          })
+        )
+      },
+
+      toggle() {
+        const currentTheme = this.getEffectiveTheme()
+        // Simply toggle between light and dark
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark'
+
+        this.setStoredTheme(newTheme)
+        this.applyTheme(newTheme)
+      },
+
+      init() {
+        if (this.initialized) return
+
+        // Set initial theme (maintain current theme when refreshing page)
+        this.applyTheme(this.getEffectiveTheme())
+
+        // Listen for system theme changes
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+          const newSystemTheme = e.matches ? 'dark' : 'light'
+
+          // Always follow system theme changes and update stored theme preference
+          this.setStoredTheme(newSystemTheme)
+          this.applyTheme(newSystemTheme)
+        })
+
+        this.initialized = true
+      }
+    }
+
+    // Initialize theme manager
+    window.ThemeManager.init()
+
+    // Apply theme when needed
+    const applyTheme = () => {
+      if (window.ThemeManager) {
+        const theme = window.ThemeManager.getEffectiveTheme()
+        window.ThemeManager.applyTheme(theme)
+      }
+    }
+
+    // Apply immediately on script load
+    applyTheme()
+
+    // Listen for navigation events
+    document.addEventListener('astro:before-preparation', applyTheme)
+
+    // Apply theme after DOM changes (both swap and page load)
+    const applyThemeAfterNavigation = () => {
+      if (window.ThemeManager) {
+        const currentTheme = window.ThemeManager.getEffectiveTheme()
+        const appliedTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+
+        if (currentTheme !== appliedTheme) {
+          // Use requestAnimationFrame to ensure theme is applied in the next frame, avoiding conflicts with view transition
+          requestAnimationFrame(() => {
+            window.ThemeManager.applyTheme(currentTheme)
+          })
+        }
+      }
+    }
+
+    document.addEventListener('astro:after-swap', applyThemeAfterNavigation)
+    document.addEventListener('astro:page-load', applyThemeAfterNavigation)
+
+    // Handle system theme changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+      if (window.ThemeManager && window.ThemeManager.isUsingSystemTheme()) {
+        setTimeout(applyTheme, 0)
+      }
+    })
+  })()
+</script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.j56hQv-j.js"></script><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="preload" href="/fonts/Inter.woff2" as="font" type="font/woff2" crossorigin="anonymous"><link rel="preload" href="/fonts/Besley-Italic.woff2" as="font" type="font/woff2" crossorigin="anonymous"><link rel="sitemap" href="/sitemap-index.xml"><link rel="alternate" type="application/rss+xml" title="Lylighte" href="https://www.lylighte.cc/rss.xml"><meta name="generator" content="Astro v6.1.9"><!-- Canonical URL --><link rel="canonical" href="https://www.lylighte.cc/"><!-- Primary Meta Tags --><title>
+  Lylighte
+</title><meta name="title" content="Lylighte"><meta name="description" content="Minimal blog built by Astro"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://www.lylighte.cc/"><meta property="og:title" content="Lylighte"><meta property="og:description" content="Minimal blog built by Astro"><meta property="og:image" content="https://www.lylighte.cc/og/chiri-og.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://www.lylighte.cc/"><meta property="twitter:title" content="Lylighte"><meta property="twitter:description" content="Minimal blog built by Astro"><meta property="twitter:image" content="https://www.lylighte.cc/og/chiri-og.png"><link rel="stylesheet" href="/_astro/GradientMask.DDo-XyLI.css">
+<style>.about[data-astro-cid-5vtmhcfp]:not(:empty){margin-bottom:1.25rem}ul[data-astro-cid-5fcytbnx]{padding:0;margin:0;list-style-type:none;display:flex;flex-direction:column;gap:0}a[data-astro-cid-5fcytbnx]{color:var(--text-primary);display:block;text-decoration:none;transition:opacity .15s ease-out}@media(hover:hover)and (pointer:fine){ul[data-astro-cid-5fcytbnx]:hover a[data-astro-cid-5fcytbnx]{opacity:.4}ul[data-astro-cid-5fcytbnx]:hover a[data-astro-cid-5fcytbnx]:hover{opacity:1}ul[data-astro-cid-5fcytbnx]:hover a[data-astro-cid-5fcytbnx]:hover .divider[data-astro-cid-5fcytbnx]{background-color:var(--text-tertiary);opacity:.75}ul[data-astro-cid-5fcytbnx]:hover a[data-astro-cid-5fcytbnx]:hover .dotted-divider[data-astro-cid-5fcytbnx]{color:var(--text-secondary)}ul[data-astro-cid-5fcytbnx]:hover a[data-astro-cid-5fcytbnx]:hover .date[data-astro-cid-5fcytbnx]{color:var(--text-secondary);opacity:1}}.post-item[data-astro-cid-5fcytbnx]{height:2.75rem;display:flex;justify-content:space-between;align-items:center;gap:.75rem}.post-item[data-astro-cid-5fcytbnx].date-left{justify-content:flex-start}.post-item[data-astro-cid-5fcytbnx].date-left .title[data-astro-cid-5fcytbnx]{flex:1 1 auto;min-width:0}.post-item[data-astro-cid-5fcytbnx].date-left .date[data-astro-cid-5fcytbnx]{margin-right:.75rem}.title[data-astro-cid-5fcytbnx]{margin:0;flex-shrink:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.date[data-astro-cid-5fcytbnx]{margin:0;color:var(--text-secondary);opacity:.75;letter-spacing:var(--spacing-s);flex-shrink:0;white-space:nowrap}.divider[data-astro-cid-5fcytbnx]{flex:1 1 auto;min-width:3rem;margin:0 .25rem;height:.5px;background-color:var(--border)}.dotted-divider[data-astro-cid-5fcytbnx]{flex:1 1 3rem;min-width:3rem;max-width:100%;text-align:end;letter-spacing:5px;height:1.675rem;overflow:hidden;color:var(--text-tertiary);opacity:.75}.dotted-divider[data-astro-cid-5fcytbnx]:after{content:"·····························································································································································";pointer-events:none}.placeholder[data-astro-cid-5fcytbnx]{height:3rem}
+header[data-astro-cid-qlfjksao]{margin:0}nav[data-astro-cid-qlfjksao]{display:flex;justify-content:space-between;align-items:center}.site-title[data-astro-cid-qlfjksao]{font-weight:var(--font-weight-bold);color:var(--text-primary);text-decoration:none;min-width:3rem;display:inline-block}.nav-links[data-astro-cid-qlfjksao]{display:flex;align-items:center;gap:1rem}.nav-links[data-astro-cid-qlfjksao] a[data-astro-cid-qlfjksao]{font-size:var(--font-size-s);font-weight:var(--font-weight-regular);color:var(--text-secondary);text-decoration:none;transition:color .2s ease-out}.nav-links[data-astro-cid-qlfjksao] a[data-astro-cid-qlfjksao]:hover{color:var(--text-primary)}.page-content{flex:1;display:flex;flex-direction:column}.page-content main{flex:1}
+.date-left[data-astro-cid-5mzstg4p]{display:inline-block;min-width:86px;text-align:right}
+</style></head> <body data-centered="true" style="
+      max-width: 35rem;
+      --content-width: 35rem;
+    "> <script>
+  // Favicon theme switcher for system theme-based favicon updates, using external SVG file
+  class FaviconThemeSwitcher {
+    constructor() {
+      this.faviconLink =
+        document.querySelector('link[rel="icon"]') ||
+        document.querySelector('link[rel="shortcut icon"]') ||
+        document.querySelector('link[rel="apple-touch-icon"]')
+
+      if (!this.faviconLink) {
+        console.warn('Favicon link not found, skipping theme switcher')
+        return
+      }
+
+      this.mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+      this.svgUrl = '/favicon.svg'
+      this.currentColor = null
+      this.svgContent = null
+
+      this.mediaQuery.addEventListener('change', () => this.updateFavicon())
+      this.init()
+    }
+
+    async init() {
+      if (!this.svgContent) {
+        try {
+          const res = await fetch(this.svgUrl)
+          this.svgContent = await res.text()
+        } catch (e) {
+          console.warn('Failed to fetch favicon.svg:', e)
+          return
+        }
+      }
+      this.updateFavicon()
+    }
+
+    updateFavicon() {
+      const color = this.mediaQuery.matches ? '#ccc' : '#111'
+      if (this.currentColor === color) return
+      this.currentColor = color
+      this.updateFaviconColor(color)
+    }
+
+    updateFaviconColor(color) {
+      if (!this.svgContent) return
+      try {
+        const parser = new DOMParser()
+        const doc = parser.parseFromString(this.svgContent, 'image/svg+xml')
+
+        // Remove all <style> tags
+        doc.querySelectorAll('style').forEach((style) => style.remove())
+
+        // Recursively set fill attribute for all elements
+        function setFillRecursively(node) {
+          if (node.nodeType === 1) {
+            // Element node
+            node.setAttribute('fill', color)
+            // Remove fill from style attribute if present
+            if (node.hasAttribute('style')) {
+              let style = node.getAttribute('style')
+              style = style.replace(/fill\s*:\s*[^;]+;?/gi, '')
+              node.setAttribute('style', style)
+            }
+            for (let i = 0; i < node.childNodes.length; i++) {
+              setFillRecursively(node.childNodes[i])
+            }
+          }
+        }
+        setFillRecursively(doc.documentElement)
+
+        const serializer = new XMLSerializer()
+        const svg = serializer.serializeToString(doc)
+        const blob = new Blob([svg], { type: 'image/svg+xml' })
+        const blobUrl = URL.createObjectURL(blob)
+        this.faviconLink.href = blobUrl
+        if (this.previousBlobUrl) {
+          URL.revokeObjectURL(this.previousBlobUrl)
+        }
+        this.previousBlobUrl = blobUrl
+      } catch (e) {
+        console.warn('Failed to update favicon color:', e)
+      }
+    }
+  }
+
+  // Initialize favicon theme switcher
+  let faviconSwitcherInitialized = false
+  function init() {
+    if (faviconSwitcherInitialized) return
+    faviconSwitcherInitialized = true
+
+    try {
+      new FaviconThemeSwitcher()
+    } catch (error) {
+      console.warn('Failed to initialize favicon theme switcher:', error)
+    }
+  }
+
+  // Use only astro:page-load as it fires on initial load and navigation
+  document.addEventListener('astro:page-load', init)
+</script> <div class="layout-wrapper" id="transition-wrapper">    <div class="page-content"> <div class="gradient-mask" data-astro-cid-5gze4ep5>  </div> <script type="module">let e=null,i=!1,a=!1;function r(){if(typeof window>"u")return!1;const t=navigator.userAgent,n=navigator.platform;return!(/iP(ad|hone|od)/.test(t)||n==="MacIntel"&&navigator.maxTouchPoints>1)||!(/Safari\//.test(t)&&!/(CriOS|FxiOS|EdgiOS|OPiOS|DuckDuckGo)/.test(t))?!1:!!(window.matchMedia?.("(pointer: coarse)").matches||window.matchMedia?.("(max-width: 768px)").matches)}function o(){if(a||(e||(e=document.querySelector(".gradient-mask")),!e))return;window.scrollY>=64?e.style.opacity="1":e.style.opacity="0"}function s(){i||(i=!0,requestAnimationFrame(()=>{o(),i=!1}))}function l(){if(a=r(),e=document.querySelector(".gradient-mask"),a&&e){e.style.display="none";return}o()}document.addEventListener("astro:page-load",l);window.addEventListener("scroll",s,{passive:!0});</script> <div> <header data-astro-cid-qlfjksao> <nav data-astro-cid-qlfjksao> <a href="/" class="site-title" data-astro-cid-qlfjksao>Lylighte</a> <!-- <div class="nav-links">
+      <a href="/resume">Resume</a>
+      {themeConfig.general.themeToggle && <ThemeToggle />}
+    </div> --> </nav> </header> </div> <main>  <div class="about prose" data-astro-cid-5vtmhcfp><!--
+This content will be displayed at the top of the index page.
+You can leave this empty if you don’t want to show any content.
+-->
+<p><a href="https://lyernest.240725.xyz">Blog</a>, <a href="./resume/">Resume</a></p>
+<p><strong>Welcome to Lylighte’s Home Page</strong></p>
+<p>I’m an undergraduate student majoring in Electronic Science and Technology at the University of Science and Technology of China (USTC). Meanwhile I take interest in programming, pixelart creation and game development.</p>
+<p>You can find my projects below.</p></div> <main> <ul data-astro-cid-5fcytbnx> <li data-astro-cid-5fcytbnx> <a href="/element-skin-contributor/" data-astro-cid-5fcytbnx> <div class="post-item " data-astro-cid-5fcytbnx>  <p class="title" data-astro-cid-5fcytbnx>Element Skin (Contributor)</p> <div class="divider" data-astro-cid-5fcytbnx></div> <p class="date font-features" data-astro-cid-5fcytbnx> <time datetime="2026-04-28T00:00:00.000Z" class data-astro-cid-5mzstg4p> 2026.04.28 </time> </p> </div> </a> </li><li data-astro-cid-5fcytbnx> <a href="/feature-mapart/" data-astro-cid-5fcytbnx> <div class="post-item " data-astro-cid-5fcytbnx>  <p class="title" data-astro-cid-5fcytbnx>Feature Mapart in Minecraft</p> <div class="divider" data-astro-cid-5fcytbnx></div> <p class="date font-features" data-astro-cid-5fcytbnx> <time datetime="2026-02-11T00:00:00.000Z" class data-astro-cid-5mzstg4p> 2026.02.11 </time> </p> </div> </a> </li><li data-astro-cid-5fcytbnx> <a href="/new-post/" data-astro-cid-5fcytbnx> <div class="post-item " data-astro-cid-5fcytbnx>  <p class="title" data-astro-cid-5fcytbnx>Template</p> <div class="divider" data-astro-cid-5fcytbnx></div> <p class="date font-features" data-astro-cid-5fcytbnx> <time datetime="1970-01-01T00:00:00.000Z" class data-astro-cid-5mzstg4p> 1970.01.01 </time> </p> </div> </a> </li> </ul> <div class="placeholder" data-astro-cid-5fcytbnx></div> </main>  </main> <div> <footer data-astro-cid-35ed7um5> <div class="footer-content" data-astro-cid-35ed7um5> <div class="copyright" data-astro-cid-35ed7um5> <span class="date" data-astro-cid-35ed7um5>
+&copy;
+2026 </span> Lylighte </div> <div class="powered-by" data-astro-cid-35ed7um5>
+Powered by  <a href="https://astro.build" data-astro-cid-35ed7um5>Astro</a> &  <a href="https://github.com/the3ash/astro-chiri" data-astro-cid-35ed7um5>Chiri</a> </div> </div> <div class="footer-content" data-astro-cid-35ed7um5> <div class="icp" data-astro-cid-35ed7um5> <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer" data-astro-cid-35ed7um5>
+苏ICP备2025196817号-1
+</a> </div> <div class="icp" data-astro-cid-35ed7um5> <a href="https://beian.mps.gov.cn/#/query/webSearch?code=32130202081405" target="_blank" rel="noopener noreferrer" data-astro-cid-35ed7um5>
+苏公网安备 32130202081405号
+</a> </div> </div> </footer> </div> </div>   </div> <script>
+  // Cleanup hover states after Astro page load and on touch events
+  function cleanupHover() {
+    const hoveredLinks = document.querySelectorAll('ul a:hover')
+    hoveredLinks.forEach((link) => {
+      link.style.opacity = ''
+    })
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    setTimeout(cleanupHover, 50)
+  })
+
+  // Add touch event listener for touch devices
+  document.addEventListener('touchstart', cleanupHover, { passive: true })
+</script> <style>
+  @supports (view-transition-name: none) {
+    @media not (prefers-reduced-motion: reduce) {
+      ::view-transition-old(root) {
+        animation: fade-out 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      }
+
+      ::view-transition-new(root) {
+        opacity: 0;
+        animation: fade-in 0.4s ease 0.2s forwards;
+        will-change: filter, opacity, transform;
+      }
+    }
+  }
+
+  @keyframes fade-out {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+      filter: blur(8px);
+      transform: translateZ(0);
+    }
+    30% {
+      opacity: 0.5;
+      filter: blur(4px);
+      transform: translateZ(0);
+    }
+    100% {
+      opacity: 1;
+      filter: blur(0);
+      transform: translateZ(0);
+    }
+  }
+</style> <script>(function(){const fadeAnimation = true;
+
+      if (!fadeAnimation) {
+        const dispatchPageLoad = () => {
+          document.dispatchEvent(new Event('astro:page-load'))
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', dispatchPageLoad, { once: true })
+        } else {
+          queueMicrotask(dispatchPageLoad)
+        }
+      }
+    })();</script> </body> </html>
