@@ -36,6 +36,7 @@ export interface PostListProps {
 export interface ResumeBasics {
   name: string
   label: string
+  avatar?: string
   email?: string
   website?: string
   summary: string

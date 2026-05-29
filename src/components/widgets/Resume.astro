@@ -7,6 +7,7 @@ interface Props {
 
 const { data } = Astro.props
 const { basics, experience, activity, certificates, interests, links } = data
+const { avatar } = basics
 
 const fmtDate = (s: string) => {
   const [y, m] = s.split('-')
@@ -29,6 +30,7 @@ const dateRange = (start: string, end: string) =>
 <div class="resume prose">
   <!-- ── Header ── -->
   <header class="resume-header">
+    {avatar && <img class="resume-avatar" src={avatar} alt={basics.name} />}
     <h1 class="resume-name">{basics.name}</h1>
     {basics.label && <p class="resume-label">{basics.label}</p>}
     <div class="resume-contact">
@@ -125,6 +127,15 @@ const dateRange = (start: string, end: string) =>
 
 <style>
   .resume { margin-bottom: 8rem; }
+
+  /* ── Avatar ── */
+  .resume-avatar {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 0.75rem;
+  }
 
   /* ── Header ── */
   .resume-header {

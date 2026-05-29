@@ -11,6 +11,6 @@ You can leave this empty if you don’t want to show any content.
 
 **Welcome to Lylighte's Home Page**
 
-I'm an undergraduate student majoring in Electronic Science and Technology at the University of Science and Technology of China (USTC). Meanwhile I take interest in programming, pixelart creation and game development. 
+As an undergraduate student at the University of Science and Technology of China, I am passionate about technology and eager to learn and grow in this field.
 
-You can find my projects below.
+This page serves as a platform to share my projects related to technology, innovation, and creativity. I hope to connect with like-minded individuals and contribute to the vibrant community of technology enthusiasts.

@@ -3,10 +3,11 @@
   "basics": {
     "name": "Yuanda Li",
     "label": "StepFwd",
+    "avatar": "https://q1.qlogo.cn/g?b=qq&nk=2548182618&s=640",
     "email": "lylighte@ustc.edu",
     "website": "https://www.lylighte.cc",
-    "summary": "Still a student, but eager to learn and grow in the field of technology.",
-    "skills": ["Hardware"]
+    "summary": "Eager to learn and grow in the field of technology.",
+    "skills": ["Hardware", "Software", "Teamwork"]
   },
   "experience": [
     {
@@ -15,33 +16,69 @@
       "startDate": "2024-09",
       "endDate": "2028-06",
       "highlights": [
+        "Maintaining a competitive grade",
+        "Enriching my network of relationships and knowledge in the field of technology",
+        "Diving into an innovation training program (coming soon)",
+        "Collaborating on a creativity-driven team project"
+      ]
+    },
+    {
+      "title": "Exchange to the C9 League University (coming soon)",
+      "organization": "Shanghai Jiao Tong University",
+      "startDate": "2026-07",
+      "endDate": "2026-08",
+      "highlights": [ 
+
       ]
     }
   ],
     "certificates": [
     {
-      "name": "Outstanding Student Scholarship (Grade 1) (2024-2025)",
+      "name": "Outstanding Student Scholarship (Gold) (2025)",
       "issuer": "University of Science and Technology of China",
       "date": "2025-09"
+    },
+    {
+      "name": "Soong Ching Ling Future Fund(2025)",
+      "date": "2025-12"
     }
   ],
   "activity": [
     {
       "role": "Member",
-      "organization": "SME's Student Union",
+      "organization": "SME's Student Council",
       "startDate": "2024-09",
-      "endDate": "2026-09",
+      "endDate": "2026-07",
       "highlights": [
         "Fostering a vibrant campus atmosphere"
       ]
     },
     {
-      "role": "Member",
+      "role": "Club President",
+      "organization": "Graphics Pixel Art Club - USTCSME",
+      "startDate": "2025-12",
+      "endDate": "2026-11",
+      "highlights": [
+        "True Minecraft-Extended Fans Unite.",
+        "Promoting creativity and technology through pixel art."
+      ]
+    },
+    {
+      "role": "Staff of Bilibili Department",
       "organization": "USTC's Media Center",
       "startDate": "2026-03",
       "endDate": "2028-06",
       "highlights": [
         "Contributing to the creation for the university community"
+      ]
+    },
+    {
+      "role": "Coordinator",
+      "organization": "Minecraft University Alliance",
+      "startDate": "2026-04",
+      "endDate": "2027-03",
+      "highlights": [
+        "Bridging the gaps among Minecraft fans in universities"
       ]
     }
   ],
@@ -59,6 +96,10 @@
     {
       "label": "GitHub",
       "url": "https://github.com/lylighte"
+    },
+    {
+      "label": "Bilibili",
+      "url": "https://space.bilibili.com/349533390"
     }
   ]
 }
