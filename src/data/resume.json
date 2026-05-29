@@ -46,7 +46,7 @@
   "activity": [
     {
       "role": "Member",
-      "organization": "SME's Student Council",
+      "organization": "SME Student Council",
       "startDate": "2024-09",
       "endDate": "2026-07",
       "highlights": [
@@ -65,7 +65,7 @@
     },
     {
       "role": "Staff of Bilibili Department",
-      "organization": "USTC's Media Center",
+      "organization": "USTC Media Center",
       "startDate": "2026-03",
       "endDate": "2028-06",
       "highlights": [
@@ -85,7 +85,7 @@
   "interests": [
     {
       "name": "Tech",
-      "keywords": ["PC", "DIY", "Coding"]
+      "keywords": ["PC", "DIY", "Coding", "Video Editing"]
     },
     {
       "name": "ACG",
