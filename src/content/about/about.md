@@ -14,3 +14,7 @@ You can leave this empty if you don’t want to show any content.
 As an undergraduate student at the University of Science and Technology of China, I am passionate about technology and eager to learn and grow in this field.
 
 This page serves as a platform to share my projects related to technology, innovation, and creativity. I hope to connect with like-minded individuals and contribute to the vibrant community of technology enthusiasts.
+
+# **Contact**
+
+[GitHub](https://github.com/Lylighte), [Email](mailto:lylighte@mail.ustc.edu.cn)
