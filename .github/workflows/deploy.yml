@@ -7,7 +7,6 @@ on:
       - 'LICENSE'
       - '.gitignore'
       - 'README.md'
-      - '**/*.md'
       - '**/*.png'
       - '**/*.jpg'
       - '**/*.jpeg'
