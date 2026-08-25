@@ -1,0 +1,692 @@
+<!DOCTYPE html><html lang="en-US"> <head><!--
+  This is a critical style block to prevent flashing on page load in dark mode.
+  It is injected into the <head> of the document before the main stylesheets are loaded.
+--><style>
+  :root {
+    --bg: #ffffff;
+  }
+
+  html.dark {
+    --bg: #1c1c1c;
+  }
+
+  html {
+    background-color: var(--bg);
+    color-scheme: light;
+  }
+
+  html.dark {
+    color-scheme: dark;
+  }
+</style><script>
+  // Global Theme Manager
+  ;(function () {
+    // Prevent duplicate initialization
+    if (window.ThemeManager && window.ThemeManager.initialized) {
+      return
+    }
+
+    const systemThemeQuery = window.matchMedia('(prefers-color-scheme: dark)')
+
+    function getAppliedTheme() {
+      return document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+    }
+
+    window.ThemeManager = {
+      STORAGE_KEY: 'chiri-theme',
+      initialized: false,
+
+      getSystemTheme() {
+        return systemThemeQuery.matches ? 'dark' : 'light'
+      },
+
+      getStoredTheme() {
+        try {
+          return localStorage.getItem(this.STORAGE_KEY)
+        } catch {
+          return null
+        }
+      },
+
+      setStoredTheme(theme) {
+        try {
+          if (theme === 'system') {
+            // Reserved API: clearing storage makes the current system theme effective again.
+            localStorage.removeItem(this.STORAGE_KEY)
+          } else {
+            localStorage.setItem(this.STORAGE_KEY, theme)
+          }
+        } catch (e) {
+          console.warn('Failed to store theme preference:', e)
+        }
+      },
+
+      getEffectiveTheme() {
+        const stored = this.getStoredTheme()
+        return stored || this.getSystemTheme()
+      },
+
+      isUsingSystemTheme() {
+        return this.getStoredTheme() === null
+      },
+
+      applyTheme(theme) {
+        document.documentElement.classList.remove('light', 'dark')
+        document.documentElement.classList.add(theme)
+
+        const isSystemTheme = this.isUsingSystemTheme()
+
+        // Dispatch event for other components
+        document.dispatchEvent(
+          new CustomEvent('themechange', {
+            detail: {
+              theme,
+              isUserChoice: !isSystemTheme,
+              isSystemTheme
+            }
+          })
+        )
+      },
+
+      toggle() {
+        const currentTheme = this.getEffectiveTheme()
+        // Simply toggle between light and dark
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark'
+
+        this.setStoredTheme(newTheme)
+        this.applyTheme(newTheme)
+      },
+
+      init() {
+        if (this.initialized) return
+
+        // Set initial theme (maintain current theme when refreshing page)
+        this.applyTheme(this.getEffectiveTheme())
+
+        systemThemeQuery.addEventListener('change', (e) => {
+          const newSystemTheme = e.matches ? 'dark' : 'light'
+
+          // Current product behavior: system theme changes always become the stored theme.
+          this.setStoredTheme(newSystemTheme)
+          this.applyTheme(newSystemTheme)
+        })
+
+        this.initialized = true
+      }
+    }
+
+    // Initialize theme manager
+    window.ThemeManager.init()
+
+    const applyTheme = () => {
+      if (window.ThemeManager) {
+        const theme = window.ThemeManager.getEffectiveTheme()
+        window.ThemeManager.applyTheme(theme)
+      }
+    }
+
+    // Listen for navigation events
+    document.addEventListener('astro:before-preparation', applyTheme)
+
+    // Apply theme after DOM changes (both swap and page load)
+    const applyThemeAfterNavigation = () => {
+      if (window.ThemeManager) {
+        const currentTheme = window.ThemeManager.getEffectiveTheme()
+        const appliedTheme = getAppliedTheme()
+
+        if (currentTheme !== appliedTheme) {
+          // Use requestAnimationFrame to ensure theme is applied in the next frame, avoiding conflicts with view transition
+          requestAnimationFrame(() => {
+            window.ThemeManager.applyTheme(currentTheme)
+          })
+        }
+      }
+    }
+
+    document.addEventListener('astro:after-swap', applyThemeAfterNavigation)
+    document.addEventListener('astro:page-load', applyThemeAfterNavigation)
+  })()
+</script><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CAqDO0tx.js"></script><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/png" href="/favicons/favicon-light.png" media="(prefers-color-scheme: light)"><link rel="icon" type="image/png" href="/favicons/favicon-dark.png" media="(prefers-color-scheme: dark)"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="preload" href="/fonts/Inter.woff2" as="font" type="font/woff2" crossorigin="anonymous"><link rel="preload" href="/fonts/Besley-Italic.woff2" as="font" type="font/woff2" crossorigin="anonymous"><link rel="sitemap" href="/sitemap-index.xml"><link rel="alternate" type="application/rss+xml" title="Lylighte" href="https://www.lylighte.cc/rss.xml"><link rel="stylesheet" href="/_astro/katex.min.Ci-tvtJg.css" media="print" onload="this.media='all'"><meta name="generator" content="Astro v6.3.7"><!-- Canonical URL --><link rel="canonical" href="https://www.lylighte.cc/element-wiki/"><!-- Primary Meta Tags --><title>
+  Element Wiki · Lylighte
+</title><meta name="title" content="Element Wiki · Lylighte"><meta name="description" content="Minimal blog built by Astro"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://www.lylighte.cc/element-wiki/"><meta property="og:title" content="Element Wiki · Lylighte"><meta property="og:description" content="Minimal blog built by Astro"><meta property="og:image" content="https://www.lylighte.cc/open-graph/element-wiki.png"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://www.lylighte.cc/element-wiki/"><meta property="twitter:title" content="Element Wiki · Lylighte"><meta property="twitter:description" content="Minimal blog built by Astro"><meta property="twitter:image" content="https://www.lylighte.cc/open-graph/element-wiki.png"><link rel="stylesheet" href="/_astro/GradientMask.DkK9PT0-.css">
+<style>.date-left[data-astro-cid-5mzstg4p]{display:inline-block;min-width:86px;text-align:right}
+.back-button[data-astro-cid-cjjlykpo]{width:8rem;display:inline-flex;align-items:center;gap:.375rem;font-family:var(--serif);font-size:var(--font-size-m);font-style:italic;letter-spacing:0;line-height:1.75;color:var(--text-secondary);cursor:pointer;border:none;background-color:transparent;position:relative;margin-bottom:2.5em;padding:0;left:-.175em;transition:color .2s ease-out;text-decoration:none}.back-button[data-astro-cid-cjjlykpo]:hover{color:var(--text-primary)}@media(hover:none)and (pointer:coarse){.back-button[data-astro-cid-cjjlykpo]:hover{color:var(--text-secondary)}}.back-button[data-astro-cid-cjjlykpo] svg[data-astro-cid-cjjlykpo]{width:.8rem;height:.8rem;flex-shrink:0}.back-button[data-astro-cid-cjjlykpo].fixed-position{position:fixed;top:6rem;margin-bottom:0;padding-left:.75rem;z-index:10}
+.image-viewer[data-astro-cid-66hmb7oq]{position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .15s ease-out,visibility 0s linear .15s;background:color-mix(in srgb,var(--bg) 60%,transparent);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}.image-viewer[data-astro-cid-66hmb7oq].active{opacity:1;visibility:visible;pointer-events:auto;transition:opacity .15s ease-out,visibility 0s ease-out}.prose img[data-preview=true]{cursor:pointer}.image-viewer[data-astro-cid-66hmb7oq] img[data-astro-cid-66hmb7oq]{min-width:45rem;max-width:60vw;max-height:80vh;object-fit:contain}@media(max-width:768px){.image-viewer[data-astro-cid-66hmb7oq] img[data-astro-cid-66hmb7oq]{min-width:100vw}}body.image-viewer-open{overflow:hidden}.post-container[data-astro-cid-gjtny2mx]{display:flex;flex-direction:column;flex:1}.post-container[data-astro-cid-gjtny2mx] main[data-astro-cid-gjtny2mx]{flex:1}
+</style></head> <body data-centered="true" style="
+      max-width: 35rem;
+      --content-width: 35rem;
+    "> <div class="layout-wrapper" id="transition-wrapper">    <div class="post-container" data-astro-cid-gjtny2mx> <main data-astro-cid-gjtny2mx> <div class="prose" data-astro-cid-gjtny2mx> <div class="gradient-mask" aria-hidden="true" data-astro-cid-5gze4ep5> <div class="gradient-mask__blur" data-astro-cid-5gze4ep5></div> <div class="gradient-mask__background" data-astro-cid-5gze4ep5></div> </div> <script type="module">let e=null,i=!1,a=!1;function r(){if(typeof window>"u")return!1;const t=navigator.userAgent,n=navigator.platform;return!(/iP(ad|hone|od)/.test(t)||n==="MacIntel"&&navigator.maxTouchPoints>1)||!(/Safari\//.test(t)&&!/(CriOS|FxiOS|EdgiOS|OPiOS|DuckDuckGo)/.test(t))?!1:!!(window.matchMedia?.("(pointer: coarse)").matches||window.matchMedia?.("(max-width: 768px)").matches)}function o(){if(a||(e||(e=document.querySelector(".gradient-mask")),!e))return;window.scrollY>=64?e.style.opacity="1":e.style.opacity="0"}function s(){i||(i=!0,requestAnimationFrame(()=>{o(),i=!1}))}function l(){if(a=r(),e=document.querySelector(".gradient-mask"),a&&e){e.style.display="none";return}o()}document.addEventListener("astro:page-load",l);window.addEventListener("scroll",s,{passive:!0});</script> <a href="/" class="back-button" data-astro-cid-cjjlykpo> <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" data-astro-cid-cjjlykpo> <path d="M2.5 6.5H9.5C11.1569 6.5 12.5 7.84315 12.5 9.5V9.5C12.5 11.1569 11.1569 12.5 9.5 12.5H7.5M2.5 6.5L5.5 9.5M2.5 6.5L5.5 3.5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-cjjlykpo></path> </svg>
+index
+</a> <script>(function(){const contentWidth = "35rem";
+const centeredLayout = true;
+const toc = true;
+
+  ;(function () {
+    // Adjust back button position based on layout and screen size
+    function adjustBackButtonPosition() {
+      const button = document.querySelector('.back-button')
+      if (!button) return
+
+      if (!centeredLayout) {
+        button.classList.remove('fixed-position')
+        button.style.left = ''
+        return
+      }
+
+      // Calculate available margin space for positioning
+      const pageWidth = window.innerWidth
+      const contentWidthValue = parseFloat(contentWidth)
+      // Apply the same minimum width logic as in BaseLayout
+      const widthValue = Math.min(contentWidthValue, 50)
+      const shouldUseCustomWidth = widthValue > 25
+      const finalWidthValue = shouldUseCustomWidth ? widthValue : 25
+      const margin = (pageWidth - finalWidthValue * 16) / 2
+      const baseMinSpace = 11 * 16 // Base minimum space needed
+      // If toc is enabled, need additional 2.5rem (40px) space
+      const minSpace = toc ? baseMinSpace + 52 : baseMinSpace + 12
+
+      // Position button fixed on the left if there's enough space
+      if (margin >= minSpace) {
+        button.classList.add('fixed-position')
+        const basePosition = margin - baseMinSpace
+        // If toc is enabled, move 2.5rem (40px) further left
+        const leftPosition = toc ? basePosition - 40 : basePosition
+        button.style.left = `${leftPosition}px`
+      } else {
+        button.classList.remove('fixed-position')
+        button.style.left = ''
+      }
+    }
+
+    adjustBackButtonPosition()
+
+    // Use only astro:page-load as it fires on initial load and navigation
+    document.addEventListener('astro:page-load', adjustBackButtonPosition)
+    window.addEventListener('resize', adjustBackButtonPosition)
+  })()
+})();</script> <div class="toc-container" id="toc"> <nav class="toc-nav"> <ul class="toc-list" id="toc-list"> <!-- Back to top link --> <li class="toc-item toc-level-0"> <a href="#" class="toc-link toc-title" title="Back to top" data-text="Back to top"> Back to top </a> </li> <!-- TOC items --> <li class="toc-item toc-level-1"> <a href="#repository" class="toc-link" title="repository" data-text="repository"> repository </a> </li> </ul> </nav> </div> <script>(function(){const contentWidth = "35rem";
+const centeredLayout = true;
+const toc = true;
+
+  ;(function () {
+    if (window.__tocController?.destroy) {
+      window.__tocController.destroy()
+    }
+
+    const activeOffset = 96
+
+    // Core state
+    const state = {
+      container: null,
+      linkList: [],
+      headingList: [],
+      titleLink: null,
+      headingMap: new Map(),
+      headingObserver: null,
+      resizeTimeout: null,
+      resetTimeout: null,
+      activeLink: null,
+      activeId: null,
+      hasContent: false
+    }
+
+    // Initialize DOM elements
+    function initElements() {
+      state.container = document.querySelector('.toc-container')
+      if (!state.container) return false
+
+      state.linkList = Array.from(document.querySelectorAll('.toc-link'))
+      state.headingList = Array.from(document.querySelectorAll('h1, h2, h3')).filter(
+        (heading, index, headings) => !(index === 0 && headings[0].tagName === 'H1') && heading.id
+      )
+      state.titleLink = document.querySelector('.toc-link.toc-title')
+
+      // Build heading map
+      state.headingMap.clear()
+      state.linkList.forEach((link) => {
+        const href = link.getAttribute('href')
+        if (href?.startsWith('#')) {
+          state.headingMap.set(href.substring(1), link)
+        }
+      })
+
+      return true
+    }
+
+    // Check if content exists
+    function checkContent() {
+      if (!state.container) return
+
+      const tocItems = state.linkList.filter((link) => !link.classList.contains('toc-title'))
+      state.hasContent = tocItems.length > 0
+
+      if (!state.hasContent) {
+        state.container.style.display = 'none'
+      }
+    }
+
+    // Adjust TOC position
+    function adjustPosition() {
+      if (!state.container || !centeredLayout || !state.hasContent) {
+        if (state.container) state.container.style.display = 'none'
+        return
+      }
+
+      const pageWidth = window.innerWidth
+      const contentWidthValue = Math.max(parseFloat(contentWidth), 25)
+      const margin = (pageWidth - contentWidthValue * 16) / 2
+      const baseMinSpace = 11 * 16 // Base minimum space needed
+      const minSpace = toc ? baseMinSpace + 52 : baseMinSpace + 12
+
+      if (margin >= minSpace) {
+        state.container.style.display = 'block'
+        state.container.classList.add('fixed-position')
+        const leftPosition = toc ? margin - 176 - 40 : margin - 176
+        state.container.style.left = `${leftPosition}px`
+      } else {
+        state.container.style.display = 'none'
+        state.container.classList.remove('fixed-position')
+        state.container.style.left = ''
+      }
+    }
+
+    // Handle click events
+    function handleClick(e) {
+      const link = e.target.closest('.toc-link')
+      if (!link) return
+
+      e.preventDefault()
+
+      if (link.classList.contains('toc-title')) {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+        history.pushState(null, null, '#')
+      } else {
+        const href = link.getAttribute('href')
+        if (href?.startsWith('#')) {
+          const target = document.getElementById(href.substring(1))
+          if (target) {
+            const rect = target.getBoundingClientRect()
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop
+            const offset = rect.top + scrollTop - activeOffset
+            window.scrollTo({ top: offset, behavior: 'smooth' })
+            history.pushState(null, null, href)
+          }
+        }
+      }
+    }
+
+    function setActive(nextActiveId) {
+      const nextActiveLink =
+        nextActiveId && state.headingMap.has(nextActiveId) ? state.headingMap.get(nextActiveId) : state.titleLink
+
+      if (state.activeId === nextActiveId && state.activeLink === nextActiveLink) {
+        return
+      }
+
+      if (state.activeLink) {
+        state.activeLink.classList.remove('active')
+      }
+
+      if (nextActiveLink) {
+        nextActiveLink.classList.add('active')
+      }
+
+      state.activeId = nextActiveId
+      state.activeLink = nextActiveLink
+    }
+
+    function setupHeadingObserver() {
+      if (state.headingObserver) {
+        state.headingObserver.disconnect()
+      }
+
+      if (!state.headingList.length) {
+        setActive(null)
+        return
+      }
+
+      state.headingObserver = new IntersectionObserver(refreshActiveHeading, {
+        rootMargin: `-${activeOffset}px 0px -65% 0px`,
+        threshold: 0
+      })
+
+      state.headingList.forEach((heading) => state.headingObserver.observe(heading))
+    }
+
+    function refreshActiveHeading() {
+      if (!state.headingList.length) {
+        setActive(null)
+        return
+      }
+
+      if (window.pageYOffset < 16 || state.headingList[0].getBoundingClientRect().top > activeOffset) {
+        setActive(null)
+        return
+      }
+
+      for (let i = state.headingList.length - 1; i >= 0; i--) {
+        if (state.headingList[i].getBoundingClientRect().top <= activeOffset) {
+          setActive(state.headingList[i].id)
+          break
+        }
+      }
+    }
+
+    // Initialize
+    function init(retryCount = 0) {
+      const maxRetries = 5
+
+      if (initElements()) {
+        checkContent()
+        adjustPosition()
+        setupHeadingObserver()
+
+        if (state.container) {
+          state.container.addEventListener('click', handleClick)
+        }
+
+        refreshActiveHeading()
+      } else if (retryCount < maxRetries) {
+        setTimeout(() => init(retryCount + 1), 100)
+      }
+    }
+
+    // Event handlers
+    function handleResize() {
+      if (state.resizeTimeout) {
+        cancelAnimationFrame(state.resizeTimeout)
+      }
+
+      state.resizeTimeout = requestAnimationFrame(() => {
+        adjustPosition()
+        refreshActiveHeading()
+      })
+    }
+
+    // Reset DOM-scoped work; destroy() additionally removes global listeners.
+    function cleanup() {
+      if (state.container) {
+        state.container.removeEventListener('click', handleClick)
+      }
+
+      if (state.headingObserver) {
+        state.headingObserver.disconnect()
+        state.headingObserver = null
+      }
+
+      if (state.resizeTimeout) {
+        cancelAnimationFrame(state.resizeTimeout)
+        state.resizeTimeout = null
+      }
+
+      if (state.resetTimeout) {
+        cancelAnimationFrame(state.resetTimeout)
+        state.resetTimeout = null
+      }
+
+      Object.assign(state, {
+        container: null,
+        linkList: [],
+        headingList: [],
+        titleLink: null,
+        headingMap: new Map(),
+        activeLink: null,
+        activeId: null,
+        hasContent: false
+      })
+    }
+
+    function reset() {
+      state.resetTimeout = null
+      cleanup()
+      init()
+    }
+
+    function scheduleReset() {
+      if (state.resetTimeout) {
+        cancelAnimationFrame(state.resetTimeout)
+      }
+
+      state.resetTimeout = requestAnimationFrame(reset)
+    }
+
+    function destroy() {
+      cleanup()
+      document.removeEventListener('astro:page-load', scheduleReset)
+      document.removeEventListener('astro:after-swap', scheduleReset)
+      window.removeEventListener('resize', handleResize)
+
+      if (window.__tocController?.destroy === destroy) {
+        window.__tocController = null
+      }
+    }
+
+    // Event listeners
+    document.addEventListener('astro:page-load', scheduleReset)
+    document.addEventListener('astro:after-swap', scheduleReset)
+    window.addEventListener('resize', handleResize)
+
+    window.__tocController = { destroy }
+    init()
+  })()
+})();</script> <style>
+  .toc-container {
+    width: 12rem;
+    position: relative;
+    left: -0.175em;
+    opacity: 0;
+    transition: opacity 0.2s ease-out;
+    display: none;
+  }
+
+  .toc-container.fixed-position {
+    opacity: 1;
+    position: fixed;
+    top: 12rem;
+    margin-top: 0;
+    padding-left: 1rem;
+    z-index: 10;
+    left: auto;
+  }
+
+  .toc-nav {
+    font-family: var(--sans);
+  }
+
+  .toc-list,
+  .toc-list li,
+  .toc-item {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .prose .toc-container .toc-list {
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+  }
+
+  .prose .toc-container .toc-list li {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .toc-item::before,
+  .toc-item::marker {
+    display: none;
+  }
+
+  .toc-link {
+    display: block;
+    color: transparent;
+    text-decoration: none;
+    position: relative;
+    padding-left: 0;
+    height: 1.125rem;
+    width: 100%;
+    min-height: 1rem;
+    font-size: 0;
+    line-height: 1.125rem;
+    text-indent: 2rem;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    transition:
+      color 0.2s ease-out,
+      font-size 0.2s ease-out,
+      text-indent 0.2s ease-out;
+    cursor: pointer;
+  }
+
+  .toc-link::after {
+    content: attr(data-text);
+    position: absolute;
+    left: -0.5rem;
+    top: 0;
+    font-family: var(--sans);
+    font-size: var(--font-size-s);
+    letter-spacing: var(--spacing-m);
+    line-height: 1.125rem;
+    color: var(--text-primary);
+    opacity: 0;
+    transition:
+      opacity 0.2s ease-out,
+      left 0.2s ease-out;
+    pointer-events: none;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 100%;
+  }
+
+  .toc-link:hover::after {
+    opacity: 1;
+    left: -0.75rem;
+  }
+
+  .toc-level-0 .toc-link:hover::after {
+    opacity: 0;
+  }
+
+  .toc-level-1 .toc-link:hover::before,
+  .toc-level-2 .toc-link:hover::before,
+  .toc-level-3 .toc-link:hover::before {
+    width: 0.75rem;
+    transition: width 0.1s ease-out;
+  }
+
+  .toc-link.active {
+    color: var(--text-primary);
+  }
+
+  /* Horizontal line indicators */
+  .toc-level-0 .toc-link::before,
+  .toc-level-1 .toc-link::before,
+  .toc-level-2 .toc-link::before,
+  .toc-level-3 .toc-link::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 1.75rem;
+    height: 1px;
+    background-color: var(--text-tertiary);
+    transform: translateY(-50%);
+    opacity: 0.4;
+    transition: all 0.1s ease-out;
+  }
+
+  .toc-link:hover::before,
+  .toc-link.active::before {
+    opacity: 0.8;
+    background-color: var(--text-primary);
+  }
+
+  /* Hide on mobile */
+  @media (max-width: 768px) {
+    .toc-container {
+      display: none !important;
+    }
+  }
+</style> <div class="title" data-astro-cid-gjtny2mx> <h1 data-astro-cid-gjtny2mx>Element Wiki</h1> <div class="date" data-astro-cid-gjtny2mx> <time datetime="2026-08-26T00:00:00.000Z" class data-astro-cid-5mzstg4p> 2026.08.26 </time>  </div> </div> <article class="content" data-astro-cid-gjtny2mx>  <h1 id="introduction">introduction</h1>
+<p>Element Wiki is a self-hosted knowledge base for teams and individuals, named after the Vue-based Element Plus UI toolkit that powers its frontend. Built with a Go backend, it runs as a single binary with SQLite out of the box (optional PostgreSQL) and embedded Bleve full-text search, with OIDC SSO sign-in. It offers an infinitely nestable document tree, immutable linear versioning, auto-save drafts, concurrent edit conflict detection, a recycle bin, and fine-grained permissions.</p>
+<h1 id="repository">repository</h1>
+<p>This project is still under development.</p>
+<p><a href="https://github.com/Lylighte/element-wiki">GitHub</a></p>
+<p>License: MIT</p>  </article> </div> </main>         <footer data-astro-cid-35ed7um5> <div class="footer-content" data-astro-cid-35ed7um5> <div class="copyright" data-astro-cid-35ed7um5> <span class="date" data-astro-cid-35ed7um5>
+&copy;
+2026 </span> Lylighte </div> <div class="powered-by" data-astro-cid-35ed7um5>
+Powered by  <a href="https://astro.build" data-astro-cid-35ed7um5>Astro</a> +  <a href="https://github.com/the3ash/astro-chiri" data-astro-cid-35ed7um5>Chiri</a> </div> </div> <div class="footer-content" data-astro-cid-35ed7um5> <div class="icp" data-astro-cid-35ed7um5> <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer" data-astro-cid-35ed7um5>
+苏ICP备2025196817号-1
+</a> </div> <div class="icp" data-astro-cid-35ed7um5> <a href="https://beian.mps.gov.cn/#/query/webSearch?code=32130202081405" target="_blank" rel="noopener noreferrer" data-astro-cid-35ed7um5>
+苏公网安备 32130202081405号
+</a> </div> </div> </footer> </div>   </div> <script>
+  // Cleanup hover states after Astro page load and on touch events
+  function cleanupHover() {
+    const hoveredLinks = document.querySelectorAll('ul a:hover')
+    hoveredLinks.forEach((link) => {
+      link.style.opacity = ''
+    })
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    setTimeout(cleanupHover, 50)
+  })
+
+  // Add touch event listener for touch devices
+  document.addEventListener('touchstart', cleanupHover, { passive: true })
+</script> <style>
+  @supports (view-transition-name: none) {
+    @media not (prefers-reduced-motion: reduce) {
+      ::view-transition-old(root) {
+        animation: fade-out 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      }
+
+      ::view-transition-new(root) {
+        opacity: 0;
+        animation: fade-in 0.4s ease 0.2s forwards;
+        will-change: filter, opacity, transform;
+      }
+    }
+  }
+
+  @keyframes fade-out {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+      filter: blur(8px);
+      transform: translateZ(0);
+    }
+    30% {
+      opacity: 0.5;
+      filter: blur(4px);
+      transform: translateZ(0);
+    }
+    100% {
+      opacity: 1;
+      filter: blur(0);
+      transform: translateZ(0);
+    }
+  }
+</style> <script>(function(){const fadeAnimation = true;
+
+      if (!fadeAnimation) {
+        const dispatchPageLoad = () => {
+          document.dispatchEvent(new Event('astro:page-load'))
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', dispatchPageLoad, { once: true })
+        } else {
+          queueMicrotask(dispatchPageLoad)
+        }
+      }
+    })();</script> </body> </html>
